@@ -14,8 +14,8 @@ namespace MedicExpermed.Models
         public string NombreDiagnostico { get; set; } = null!;
         public string? DescripcionDiagnostico { get; set; }
         public string? CategoriaDiagnostico { get; set; }
+        public string UuidDiagnostico { get; set; } = null!;
         public int EstadoDiagnostico { get; set; }
-        public string? CodigoDiagnostico { get; set; }
 
         public virtual ICollection<ConsultaDiagnostico> ConsultaDiagnosticos { get; set; }
     }

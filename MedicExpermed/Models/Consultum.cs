@@ -8,10 +8,6 @@ namespace MedicExpermed.Models
         public Consultum()
         {
             Cita = new HashSet<Citum>();
-
-            ConsultaAntecedentesFamiliares = new AntecedentesFamiliare();
-            ConsultaOrganosSistemas = new OrganosSistema();
-            ConsultaExamenFisico = new ExamenFisico();
         }
 
         public int IdConsulta { get; set; }
@@ -26,7 +22,7 @@ namespace MedicExpermed.Models
         public string? SignosalarmaConsulta { get; set; }
         public string? Reconofarmacologicas { get; set; }
         public int? TipoparienteConsulta { get; set; }
-        public string? TelefonoConsulta { get; set; }
+        public string? TelefonoParienteConsulta { get; set; }
         public string TemperaturaConsulta { get; set; } = null!;
         public string FrecuenciarespiratoriaConsulta { get; set; } = null!;
         public string PresionarterialsistolicaConsulta { get; set; } = null!;
@@ -40,15 +36,10 @@ namespace MedicExpermed.Models
         public int? DiasincapacidadConsulta { get; set; }
         public int? MedicoConsultaD { get; set; }
         public int? EspecialidadId { get; set; }
-        public int? AlergiasconsultaId { get; set; }
-        public string? Obseralergiasconsulta { get; set; }
-        public int? CirugiasconsultaId { get; set; }
-        public int? ObsercirugiasId { get; set; }
-        public int EstadoConsultaC { get; set; }
         public int? TipoConsultaC { get; set; }
         public string? NotasevolucionConsulta { get; set; }
         public string? ConsultaprincipalConsulta { get; set; }
-        public int ActivoConsulta { get; set; }
+        public int EstadoConsultaC { get; set; }
         public int? ConsultaMedicamentosId { get; set; }
         public int? ConsultaLaboratorioId { get; set; }
         public int? ConsultaAntecedentesFamiliaresId { get; set; }
@@ -56,10 +47,12 @@ namespace MedicExpermed.Models
         public int? ConsultaExamenFisicoId { get; set; }
         public int? ConsultaImagenId { get; set; }
         public int? ConsultaDiagnosticoId { get; set; }
+        public int? ConsultaAlergiasInt { get; set; }
+        public int? ConsultaCirugiasId { get; set; }
 
-        public virtual Catalogo? Alergiasconsulta { get; set; }
-        public virtual Catalogo? Cirugiasconsulta { get; set; }
+        public virtual ConsultaAlergia? ConsultaAlergiasIntNavigation { get; set; }
         public virtual AntecedentesFamiliare? ConsultaAntecedentesFamiliares { get; set; }
+        public virtual ConsultaCirugia? ConsultaCirugias { get; set; }
         public virtual ConsultaDiagnostico? ConsultaDiagnostico { get; set; }
         public virtual ExamenFisico? ConsultaExamenFisico { get; set; }
         public virtual ConsultaImagen? ConsultaImagen { get; set; }

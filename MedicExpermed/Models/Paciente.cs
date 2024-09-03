@@ -13,9 +13,9 @@ namespace MedicExpermed.Models
 
         public int IdPacientes { get; set; }
         public DateTime? FechacreacionPacientes { get; set; }
-        public string? UsuariocreacionPacientes { get; set; }
+        public string UsuariocreacionPacientes { get; set; } = null!;
         public DateTime? FechamodificacionPacientes { get; set; }
-        public string? UsuariomodificacionPacientes { get; set; }
+        public string UsuariomodificacionPacientes { get; set; } = null!;
         public int? TipodocumentoPacientesCa { get; set; }
         public int CiPacientes { get; set; }
         public string PrimernombrePacientes { get; set; } = null!;

@@ -13,7 +13,7 @@ namespace MedicExpermed.Models
         public int IdConsultaMedicamento { get; set; }
         public DateTime? FechacreacionMedicamento { get; set; }
         public int? MedicamentoId { get; set; }
-        public int ConsultaMedicamentosId { get; set; }
+        public int? ConsultaMedicamentosId { get; set; }
         public string? DosisMedicamento { get; set; }
         public string? ObservacionMedicamento { get; set; }
         public int EstadoMedicamento { get; set; }

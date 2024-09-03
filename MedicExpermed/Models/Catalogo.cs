@@ -19,8 +19,6 @@ namespace MedicExpermed.Models
             AntecedentesFamiliareParentescocatalogoTuberculosisNavigations = new HashSet<AntecedentesFamiliare>();
             ConsultaAlergia = new HashSet<ConsultaAlergia>();
             ConsultaCirugia = new HashSet<ConsultaCirugia>();
-            ConsultumAlergiasconsulta = new HashSet<Consultum>();
-            ConsultumCirugiasconsulta = new HashSet<Consultum>();
             PacienteEstadocivilPacientesCaNavigations = new HashSet<Paciente>();
             PacienteFormacionprofesionalPacientesCaNavigations = new HashSet<Paciente>();
             PacienteSegurosaludPacientesCaNavigations = new HashSet<Paciente>();
@@ -51,8 +49,6 @@ namespace MedicExpermed.Models
         public virtual ICollection<AntecedentesFamiliare> AntecedentesFamiliareParentescocatalogoTuberculosisNavigations { get; set; }
         public virtual ICollection<ConsultaAlergia> ConsultaAlergia { get; set; }
         public virtual ICollection<ConsultaCirugia> ConsultaCirugia { get; set; }
-        public virtual ICollection<Consultum> ConsultumAlergiasconsulta { get; set; }
-        public virtual ICollection<Consultum> ConsultumCirugiasconsulta { get; set; }
         public virtual ICollection<Paciente> PacienteEstadocivilPacientesCaNavigations { get; set; }
         public virtual ICollection<Paciente> PacienteFormacionprofesionalPacientesCaNavigations { get; set; }
         public virtual ICollection<Paciente> PacienteSegurosaludPacientesCaNavigations { get; set; }

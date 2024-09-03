@@ -30,7 +30,6 @@ namespace MedicExpermed.Models
         public virtual DbSet<Especialidad> Especialidads { get; set; } = null!;
         public virtual DbSet<Establecimiento> Establecimientos { get; set; } = null!;
         public virtual DbSet<ExamenFisico> ExamenFisicos { get; set; } = null!;
-        public virtual DbSet<Facturacion> Facturacions { get; set; } = null!;
         public virtual DbSet<Imagen> Imagens { get; set; } = null!;
         public virtual DbSet<Laboratorio> Laboratorios { get; set; } = null!;
         public virtual DbSet<Localidad> Localidads { get; set; } = null!;
@@ -45,8 +44,8 @@ namespace MedicExpermed.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Server=localhost;Database=medicossystembdI;Trusted_Connection=True;Command Timeout=300;");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=localhost;Database=medicossystembdII;User Id=sa;Password=1717;");
             }
         }
 
@@ -55,7 +54,7 @@ namespace MedicExpermed.Models
             modelBuilder.Entity<AntecedentesFamiliare>(entity =>
             {
                 entity.HasKey(e => e.IdAntecedente)
-                    .HasName("PK__antecede__3E01464198AC93ED");
+                    .HasName("PK__antecede__3E014641E69E4A24");
 
                 entity.ToTable("antecedentes_familiares");
 
@@ -117,7 +116,9 @@ namespace MedicExpermed.Models
                     .HasMaxLength(1000)
                     .HasColumnName("obser_tuberculosis");
 
-                entity.Property(e => e.Otro).HasColumnName("otro");
+                entity.Property(e => e.Otro)
+                    .HasMaxLength(1000)
+                    .HasColumnName("otro");
 
                 entity.Property(e => e.ParentescocatalogoCancer).HasColumnName("parentescocatalogo_cancer");
 
@@ -144,62 +145,62 @@ namespace MedicExpermed.Models
                 entity.HasOne(d => d.ParentescocatalogoCancerNavigation)
                     .WithMany(p => p.AntecedentesFamiliareParentescocatalogoCancerNavigations)
                     .HasForeignKey(d => d.ParentescocatalogoCancer)
-                    .HasConstraintName("FK_diabetes_cancer");
+                    .HasConstraintName("FK_catalogo_parentesco_cancer");
 
                 entity.HasOne(d => d.ParentescocatalogoCardiopatiaNavigation)
                     .WithMany(p => p.AntecedentesFamiliareParentescocatalogoCardiopatiaNavigations)
                     .HasForeignKey(d => d.ParentescocatalogoCardiopatia)
-                    .HasConstraintName("FK_cardiopatia_catalogo");
+                    .HasConstraintName("FK_catalogo_parentesco_cardiopatia");
 
                 entity.HasOne(d => d.ParentescocatalogoDiabetesNavigation)
                     .WithMany(p => p.AntecedentesFamiliareParentescocatalogoDiabetesNavigations)
                     .HasForeignKey(d => d.ParentescocatalogoDiabetes)
-                    .HasConstraintName("FK_diabetes_catalogo");
+                    .HasConstraintName("FK_catalogo_parentesco_diabetes");
 
                 entity.HasOne(d => d.ParentescocatalogoEnfcardiovascularNavigation)
                     .WithMany(p => p.AntecedentesFamiliareParentescocatalogoEnfcardiovascularNavigations)
                     .HasForeignKey(d => d.ParentescocatalogoEnfcardiovascular)
-                    .HasConstraintName("FK_diabetes_enfcardiovascular");
+                    .HasConstraintName("FK_catalogo_parentesco_cardiovascular");
 
                 entity.HasOne(d => d.ParentescocatalogoEnfinfecciosaNavigation)
                     .WithMany(p => p.AntecedentesFamiliareParentescocatalogoEnfinfecciosaNavigations)
                     .HasForeignKey(d => d.ParentescocatalogoEnfinfecciosa)
-                    .HasConstraintName("FK_diabetes_enfinfecciosa");
+                    .HasConstraintName("FK_catalogo_parentesco_enfinfecciosa");
 
                 entity.HasOne(d => d.ParentescocatalogoEnfmentalNavigation)
                     .WithMany(p => p.AntecedentesFamiliareParentescocatalogoEnfmentalNavigations)
                     .HasForeignKey(d => d.ParentescocatalogoEnfmental)
-                    .HasConstraintName("FK_diabetes_enfmental");
+                    .HasConstraintName("FK_catalogo_parentesco_enfmental");
 
                 entity.HasOne(d => d.ParentescocatalogoHipertensionNavigation)
                     .WithMany(p => p.AntecedentesFamiliareParentescocatalogoHipertensionNavigations)
                     .HasForeignKey(d => d.ParentescocatalogoHipertension)
-                    .HasConstraintName("FK_diabetes_hipertension");
+                    .HasConstraintName("FK_catalogo_parentesco_hipertension");
 
                 entity.HasOne(d => d.ParentescocatalogoMalformacionNavigation)
                     .WithMany(p => p.AntecedentesFamiliareParentescocatalogoMalformacionNavigations)
                     .HasForeignKey(d => d.ParentescocatalogoMalformacion)
-                    .HasConstraintName("FK_diabetes_malformacion");
+                    .HasConstraintName("FK_catalogo_parentesco_malformacion");
 
                 entity.HasOne(d => d.ParentescocatalogoOtroNavigation)
                     .WithMany(p => p.AntecedentesFamiliareParentescocatalogoOtroNavigations)
                     .HasForeignKey(d => d.ParentescocatalogoOtro)
-                    .HasConstraintName("FK_diabetes_otro");
+                    .HasConstraintName("FK_catalogo_parentesco_otro");
 
                 entity.HasOne(d => d.ParentescocatalogoTuberculosisNavigation)
                     .WithMany(p => p.AntecedentesFamiliareParentescocatalogoTuberculosisNavigations)
                     .HasForeignKey(d => d.ParentescocatalogoTuberculosis)
-                    .HasConstraintName("FK_diabetes_tuberculosis");
+                    .HasConstraintName("FK_catalogo_parentesco_tuberculosis");
             });
 
             modelBuilder.Entity<Catalogo>(entity =>
             {
                 entity.HasKey(e => e.IdCatalogo)
-                    .HasName("PK__catalogo__4B673DCAB7EFC05A");
+                    .HasName("PK__catalogo__4B673DCAC2819F25");
 
                 entity.ToTable("catalogo");
 
-                entity.HasIndex(e => e.UuidCatalogo, "UQ__catalogo__C58C4DEB631DCB7D")
+                entity.HasIndex(e => e.UuidCatalogo, "UQ__catalogo__C58C4DEB6ED6924D")
                     .IsUnique();
 
                 entity.Property(e => e.IdCatalogo).HasColumnName("id_catalogo");
@@ -238,15 +239,13 @@ namespace MedicExpermed.Models
             modelBuilder.Entity<Citum>(entity =>
             {
                 entity.HasKey(e => e.IdCita)
-                    .HasName("PK__cita__6AEC3C091696AE3D");
+                    .HasName("PK__cita__6AEC3C09F2853CD8");
 
                 entity.ToTable("cita");
 
                 entity.Property(e => e.IdCita).HasColumnName("id_cita");
 
                 entity.Property(e => e.ConsultaId).HasColumnName("consulta_id");
-
-                entity.Property(e => e.EstadoCita).HasColumnName("estado_cita");
 
                 entity.Property(e => e.FechacreacionCita)
                     .HasColumnType("datetime")
@@ -287,16 +286,16 @@ namespace MedicExpermed.Models
 
             modelBuilder.Entity<ConsultaAlergia>(entity =>
             {
-                entity.HasKey(e => e.ConsultaAlergiasInt)
-                    .HasName("PK__consulta__7846A73FAB802992");
+                entity.HasKey(e => e.IdConsultaAlergias)
+                    .HasName("PK__consulta__04246C795CAA0CA7");
 
                 entity.ToTable("consulta_alergias");
 
-                entity.Property(e => e.ConsultaAlergiasInt)
-                    .ValueGeneratedNever()
-                    .HasColumnName("consulta_alergias_int");
+                entity.Property(e => e.IdConsultaAlergias).HasColumnName("id_consulta_alergias");
 
                 entity.Property(e => e.CatalogoalergiaId).HasColumnName("catalogoalergia_id");
+
+                entity.Property(e => e.ConsultaAlergiasInt).HasColumnName("consulta_alergias_int");
 
                 entity.Property(e => e.EstadoAlergias).HasColumnName("estado_alergias");
 
@@ -304,10 +303,6 @@ namespace MedicExpermed.Models
                     .HasColumnType("datetime")
                     .HasColumnName("fechacreacion_alergia")
                     .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.IdConsultaAlergias)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id_consulta_alergias");
 
                 entity.Property(e => e.ObservacionAlergias)
                     .HasMaxLength(1000)
@@ -321,16 +316,16 @@ namespace MedicExpermed.Models
 
             modelBuilder.Entity<ConsultaCirugia>(entity =>
             {
-                entity.HasKey(e => e.ConsultaCirugiasId)
-                    .HasName("PK__consulta__310ABABE2CF79C1E");
+                entity.HasKey(e => e.IdConsultaCirugias)
+                    .HasName("PK__consulta__4383EA6F3BF406C7");
 
                 entity.ToTable("consulta_cirugias");
 
-                entity.Property(e => e.ConsultaCirugiasId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("consulta_cirugias_id");
+                entity.Property(e => e.IdConsultaCirugias).HasColumnName("id_consulta_cirugias");
 
                 entity.Property(e => e.CatalogocirugiaId).HasColumnName("catalogocirugia_id");
+
+                entity.Property(e => e.ConsultaCirugiasId).HasColumnName("consulta_cirugias_id");
 
                 entity.Property(e => e.EstadoCirugias).HasColumnName("estado_cirugias");
 
@@ -338,10 +333,6 @@ namespace MedicExpermed.Models
                     .HasColumnType("datetime")
                     .HasColumnName("fechacreacion_cirugia")
                     .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.IdConsultaCirugias)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id_consulta_cirugias");
 
                 entity.Property(e => e.ObservacionCirugia)
                     .HasMaxLength(1000)
@@ -355,11 +346,14 @@ namespace MedicExpermed.Models
 
             modelBuilder.Entity<ConsultaDiagnostico>(entity =>
             {
+                entity.HasKey(e => e.IdConsultaDiagnostico)
+                    .HasName("PK__consulta__D8B1E6BDC9196B81");
+
                 entity.ToTable("consulta_diagnostico");
 
-                entity.Property(e => e.ConsultaDiagnosticoId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("consulta_diagnostico_id");
+                entity.Property(e => e.IdConsultaDiagnostico).HasColumnName("id_consulta_diagnostico");
+
+                entity.Property(e => e.ConsultaDiagnosticoId).HasColumnName("consulta_diagnostico_id");
 
                 entity.Property(e => e.DefinitivoDiagnosticos).HasColumnName("definitivo_diagnosticos");
 
@@ -367,17 +361,11 @@ namespace MedicExpermed.Models
 
                 entity.Property(e => e.EstadoDiagnostico).HasColumnName("estado_diagnostico");
 
-                entity.Property(e => e.IdConsultaDiagnostico)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id_consulta_diagnostico");
-
                 entity.Property(e => e.ObservacionDiagnostico)
                     .HasMaxLength(1000)
                     .HasColumnName("observacion_diagnostico");
 
                 entity.Property(e => e.PresuntivoDiagnosticos).HasColumnName("presuntivo_diagnosticos");
-
-                entity.Property(e => e.SecuencialDiagnostico).HasColumnName("secuencial_diagnostico");
 
                 entity.HasOne(d => d.Diagnostico)
                     .WithMany(p => p.ConsultaDiagnosticos)
@@ -387,27 +375,24 @@ namespace MedicExpermed.Models
 
             modelBuilder.Entity<ConsultaImagen>(entity =>
             {
+                entity.HasKey(e => e.IdConsultaImagen)
+                    .HasName("PK__consulta__43A0875DEB989075");
+
                 entity.ToTable("consulta_imagen");
 
-                entity.Property(e => e.ConsultaImagenId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("consulta_imagen_id");
+                entity.Property(e => e.IdConsultaImagen).HasColumnName("id_consulta_imagen");
 
                 entity.Property(e => e.CantidadImagen).HasColumnName("cantidad_imagen");
 
-                entity.Property(e => e.EstadoImagen).HasColumnName("estado_imagen");
+                entity.Property(e => e.ConsultaImagenId).HasColumnName("consulta_imagen_id");
 
-                entity.Property(e => e.IdConsultaImagen)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id_consulta_imagen");
+                entity.Property(e => e.EstadoImagen).HasColumnName("estado_imagen");
 
                 entity.Property(e => e.ImagenId).HasColumnName("imagen_id");
 
                 entity.Property(e => e.ObservacionImagen)
                     .HasMaxLength(1000)
                     .HasColumnName("observacion_imagen");
-
-                entity.Property(e => e.SecuencialImagen).HasColumnName("secuencial_imagen");
 
                 entity.HasOne(d => d.Imagen)
                     .WithMany(p => p.ConsultaImagens)
@@ -417,27 +402,24 @@ namespace MedicExpermed.Models
 
             modelBuilder.Entity<ConsultaLaboratorio>(entity =>
             {
+                entity.HasKey(e => e.IdLaboratorioConsulta)
+                    .HasName("PK__consulta__14E407967BC064D1");
+
                 entity.ToTable("consulta_laboratorio");
 
-                entity.Property(e => e.ConsultaLaboratorioId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("consulta_laboratorio_id");
+                entity.Property(e => e.IdLaboratorioConsulta).HasColumnName("id_laboratorio_consulta");
 
                 entity.Property(e => e.CantidadLaboratorio).HasColumnName("cantidad_laboratorio");
 
                 entity.Property(e => e.CatalogoLaboratorioId).HasColumnName("catalogo_laboratorio_id");
 
-                entity.Property(e => e.EstadoLaboratorio).HasColumnName("estado_laboratorio");
+                entity.Property(e => e.ConsultaLaboratorioId).HasColumnName("consulta_laboratorio_id");
 
-                entity.Property(e => e.IdLaboratorioConsulta)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id_laboratorio_consulta");
+                entity.Property(e => e.EstadoLaboratorio).HasColumnName("estado_laboratorio");
 
                 entity.Property(e => e.Observacion)
                     .HasMaxLength(1000)
                     .HasColumnName("observacion");
-
-                entity.Property(e => e.SecuencialLaboratorio).HasColumnName("secuencial_laboratorio");
 
                 entity.HasOne(d => d.CatalogoLaboratorio)
                     .WithMany(p => p.ConsultaLaboratorios)
@@ -447,14 +429,14 @@ namespace MedicExpermed.Models
 
             modelBuilder.Entity<ConsultaMedicamento>(entity =>
             {
-                entity.HasKey(e => e.ConsultaMedicamentosId)
-                    .HasName("PK__consulta__8F80B7CD34F44341");
+                entity.HasKey(e => e.IdConsultaMedicamento)
+                    .HasName("PK__consulta__12CF7342550558D7");
 
                 entity.ToTable("consulta_medicamentos");
 
-                entity.Property(e => e.ConsultaMedicamentosId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("consulta_medicamentos_id");
+                entity.Property(e => e.IdConsultaMedicamento).HasColumnName("id_consulta_medicamento");
+
+                entity.Property(e => e.ConsultaMedicamentosId).HasColumnName("consulta_medicamentos_id");
 
                 entity.Property(e => e.DosisMedicamento)
                     .HasMaxLength(100)
@@ -466,10 +448,6 @@ namespace MedicExpermed.Models
                     .HasColumnType("datetime")
                     .HasColumnName("fechacreacion_medicamento")
                     .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.IdConsultaMedicamento)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id_consulta_medicamento");
 
                 entity.Property(e => e.MedicamentoId).HasColumnName("medicamento_id");
 
@@ -486,21 +464,19 @@ namespace MedicExpermed.Models
             modelBuilder.Entity<Consultum>(entity =>
             {
                 entity.HasKey(e => e.IdConsulta)
-                    .HasName("PK__consulta__6F53588B025442C5");
+                    .HasName("PK__consulta__6F53588BF56B70C1");
 
                 entity.ToTable("consulta");
 
                 entity.Property(e => e.IdConsulta).HasColumnName("id_consulta");
 
-                entity.Property(e => e.ActivoConsulta).HasColumnName("activo_consulta");
-
-                entity.Property(e => e.AlergiasconsultaId).HasColumnName("alergiasconsulta_id");
-
                 entity.Property(e => e.AntecedentespersonalesConsulta).HasColumnName("antecedentespersonales_consulta");
 
-                entity.Property(e => e.CirugiasconsultaId).HasColumnName("cirugiasconsulta_id");
+                entity.Property(e => e.ConsultaAlergiasInt).HasColumnName("consulta_alergias_int");
 
                 entity.Property(e => e.ConsultaAntecedentesFamiliaresId).HasColumnName("consulta_antecedentes_familiares_id");
+
+                entity.Property(e => e.ConsultaCirugiasId).HasColumnName("consulta_cirugias_id");
 
                 entity.Property(e => e.ConsultaDiagnosticoId).HasColumnName("consulta_diagnostico_id");
 
@@ -545,12 +521,6 @@ namespace MedicExpermed.Models
 
                 entity.Property(e => e.NotasevolucionConsulta).HasColumnName("notasevolucion_consulta");
 
-                entity.Property(e => e.Obseralergiasconsulta)
-                    .HasMaxLength(1000)
-                    .HasColumnName("obseralergiasconsulta");
-
-                entity.Property(e => e.ObsercirugiasId).HasColumnName("obsercirugias_id");
-
                 entity.Property(e => e.ObservacionConsulta).HasColumnName("observacion_consulta");
 
                 entity.Property(e => e.PacienteConsultaP).HasColumnName("paciente_consulta_p");
@@ -585,9 +555,9 @@ namespace MedicExpermed.Models
                     .HasMaxLength(3)
                     .HasColumnName("talla_consulta");
 
-                entity.Property(e => e.TelefonoConsulta)
+                entity.Property(e => e.TelefonoParienteConsulta)
                     .HasMaxLength(20)
-                    .HasColumnName("telefono_consulta");
+                    .HasColumnName("telefono_pariente_consulta");
 
                 entity.Property(e => e.TemperaturaConsulta)
                     .HasMaxLength(4)
@@ -601,20 +571,20 @@ namespace MedicExpermed.Models
                     .HasMaxLength(255)
                     .HasColumnName("usuariocreacion_consulta");
 
-                entity.HasOne(d => d.Alergiasconsulta)
-                    .WithMany(p => p.ConsultumAlergiasconsulta)
-                    .HasForeignKey(d => d.AlergiasconsultaId)
+                entity.HasOne(d => d.ConsultaAlergiasIntNavigation)
+                    .WithMany(p => p.Consulta)
+                    .HasForeignKey(d => d.ConsultaAlergiasInt)
                     .HasConstraintName("FK_consulta_alergias");
-
-                entity.HasOne(d => d.Cirugiasconsulta)
-                    .WithMany(p => p.ConsultumCirugiasconsulta)
-                    .HasForeignKey(d => d.CirugiasconsultaId)
-                    .HasConstraintName("FK_consulta_cirugias");
 
                 entity.HasOne(d => d.ConsultaAntecedentesFamiliares)
                     .WithMany(p => p.Consulta)
                     .HasForeignKey(d => d.ConsultaAntecedentesFamiliaresId)
                     .HasConstraintName("FK_consulta_antecedentes_familiares");
+
+                entity.HasOne(d => d.ConsultaCirugias)
+                    .WithMany(p => p.Consulta)
+                    .HasForeignKey(d => d.ConsultaCirugiasId)
+                    .HasConstraintName("FK_consulta_cirugias");
 
                 entity.HasOne(d => d.ConsultaDiagnostico)
                     .WithMany(p => p.Consulta)
@@ -665,19 +635,18 @@ namespace MedicExpermed.Models
             modelBuilder.Entity<Diagnostico>(entity =>
             {
                 entity.HasKey(e => e.IdDiagnostico)
-                    .HasName("PK__diagnost__1384B745622A6F7C");
+                    .HasName("PK__diagnost__1384B745618D4615");
 
                 entity.ToTable("diagnostico");
+
+                entity.HasIndex(e => e.UuidDiagnostico, "UQ__diagnost__A5CF086E519859FF")
+                    .IsUnique();
 
                 entity.Property(e => e.IdDiagnostico).HasColumnName("id_diagnostico");
 
                 entity.Property(e => e.CategoriaDiagnostico)
                     .HasMaxLength(255)
                     .HasColumnName("categoria_diagnostico");
-
-                entity.Property(e => e.CodigoDiagnostico)
-                    .HasMaxLength(20)
-                    .HasColumnName("codigo_diagnostico");
 
                 entity.Property(e => e.DescripcionDiagnostico)
                     .HasMaxLength(1000)
@@ -688,16 +657,20 @@ namespace MedicExpermed.Models
                 entity.Property(e => e.NombreDiagnostico)
                     .HasMaxLength(255)
                     .HasColumnName("nombre_diagnostico");
+
+                entity.Property(e => e.UuidDiagnostico)
+                    .HasMaxLength(20)
+                    .HasColumnName("uuid_diagnostico");
             });
 
             modelBuilder.Entity<Especialidad>(entity =>
             {
                 entity.HasKey(e => e.IdEspecialidad)
-                    .HasName("PK__especial__C1D13763C37ADF61");
+                    .HasName("PK__especial__C1D1376372D42039");
 
                 entity.ToTable("especialidad");
 
-                entity.HasIndex(e => e.UuidEspecialidad, "UQ__especial__A9596521852ED69D")
+                entity.HasIndex(e => e.UuidEspecialidad, "UQ__especial__A9596521C396ACED")
                     .IsUnique();
 
                 entity.Property(e => e.IdEspecialidad).HasColumnName("id_especialidad");
@@ -722,7 +695,7 @@ namespace MedicExpermed.Models
             modelBuilder.Entity<Establecimiento>(entity =>
             {
                 entity.HasKey(e => e.IdEstablecimiento)
-                    .HasName("PK__establec__AFEAEA20733865FE");
+                    .HasName("PK__establec__AFEAEA20B7B681DB");
 
                 entity.ToTable("establecimiento");
 
@@ -760,7 +733,7 @@ namespace MedicExpermed.Models
             modelBuilder.Entity<ExamenFisico>(entity =>
             {
                 entity.HasKey(e => e.IdExamenFisico)
-                    .HasName("PK__examen_f__B5B777B9FAB25DEF");
+                    .HasName("PK__examen_f__B5B777B9B9BACBD7");
 
                 entity.ToTable("examen_fisico");
 
@@ -803,46 +776,15 @@ namespace MedicExpermed.Models
                 entity.Property(e => e.Torax).HasColumnName("torax");
             });
 
-            modelBuilder.Entity<Facturacion>(entity =>
-            {
-                entity.HasKey(e => e.IdFacturacion)
-                    .HasName("PK__facturac__AC4FC8944ABE50CC");
-
-                entity.ToTable("facturacion");
-
-                entity.Property(e => e.IdFacturacion).HasColumnName("id_facturacion");
-
-                entity.Property(e => e.CitaId).HasColumnName("cita_id");
-
-                entity.Property(e => e.EstadoFactura)
-                    .HasMaxLength(255)
-                    .HasColumnName("estado_factura");
-
-                entity.Property(e => e.FechaFacturacion)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fecha_facturacion")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.MetodoPago)
-                    .HasMaxLength(255)
-                    .HasColumnName("metodo_pago");
-
-                entity.Property(e => e.TotalFactura)
-                    .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("total_factura");
-
-                entity.HasOne(d => d.Cita)
-                    .WithMany(p => p.Facturacions)
-                    .HasForeignKey(d => d.CitaId)
-                    .HasConstraintName("FK_facturacion_cita");
-            });
-
             modelBuilder.Entity<Imagen>(entity =>
             {
                 entity.HasKey(e => e.IdImagen)
-                    .HasName("PK__imagen__27CC26893EF4BF5C");
+                    .HasName("PK__imagen__27CC2689DEDEA5F8");
 
                 entity.ToTable("imagen");
+
+                entity.HasIndex(e => e.UuidImagen, "UQ__imagen__448604A00A0A3A78")
+                    .IsUnique();
 
                 entity.Property(e => e.IdImagen).HasColumnName("id_imagen");
 
@@ -861,16 +803,19 @@ namespace MedicExpermed.Models
                     .HasColumnName("nombre_imagen");
 
                 entity.Property(e => e.UuidImagen)
-                    .HasMaxLength(20)
+                    .HasMaxLength(50)
                     .HasColumnName("uuid_imagen");
             });
 
             modelBuilder.Entity<Laboratorio>(entity =>
             {
                 entity.HasKey(e => e.IdLaboratorio)
-                    .HasName("PK__laborato__781B42E25C46AD33");
+                    .HasName("PK__laborato__781B42E2343F9F3E");
 
                 entity.ToTable("laboratorio");
+
+                entity.HasIndex(e => e.UuidLaboratorios, "UQ__laborato__4D3AAC17738B3059")
+                    .IsUnique();
 
                 entity.Property(e => e.IdLaboratorio).HasColumnName("id_laboratorio");
 
@@ -889,14 +834,14 @@ namespace MedicExpermed.Models
                     .HasColumnName("nombre_laboratorio");
 
                 entity.Property(e => e.UuidLaboratorios)
-                    .HasMaxLength(20)
+                    .HasMaxLength(50)
                     .HasColumnName("uuid_laboratorios");
             });
 
             modelBuilder.Entity<Localidad>(entity =>
             {
                 entity.HasKey(e => e.IdLocalidad)
-                    .HasName("PK__localida__9A5E82AA71AF91FD");
+                    .HasName("PK__localida__9A5E82AA33BA2E50");
 
                 entity.ToTable("localidad");
 
@@ -961,9 +906,12 @@ namespace MedicExpermed.Models
             modelBuilder.Entity<Medicamento>(entity =>
             {
                 entity.HasKey(e => e.IdMedicamento)
-                    .HasName("PK__medicame__2588C0328999635C");
+                    .HasName("PK__medicame__2588C032C865F48D");
 
                 entity.ToTable("medicamentos");
+
+                entity.HasIndex(e => e.UuidMedicamento, "UQ__medicame__307E4C1DF891FAF1")
+                    .IsUnique();
 
                 entity.Property(e => e.IdMedicamento).HasColumnName("id_medicamento");
 
@@ -990,14 +938,14 @@ namespace MedicExpermed.Models
                     .HasColumnName("nombre_medicamento");
 
                 entity.Property(e => e.UuidMedicamento)
-                    .HasMaxLength(20)
+                    .HasMaxLength(50)
                     .HasColumnName("uuid_medicamento");
             });
 
             modelBuilder.Entity<OrganosSistema>(entity =>
             {
                 entity.HasKey(e => e.IdOrganosSistemas)
-                    .HasName("PK__organos___222F2383F088AF3C");
+                    .HasName("PK__organos___222F238370DCE080");
 
                 entity.ToTable("organos_sistemas");
 
@@ -1067,11 +1015,11 @@ namespace MedicExpermed.Models
             modelBuilder.Entity<Paciente>(entity =>
             {
                 entity.HasKey(e => e.IdPacientes)
-                    .HasName("PK__paciente__D80336DA04414692");
+                    .HasName("PK__paciente__D80336DA09EFE6B9");
 
                 entity.ToTable("pacientes");
 
-                entity.HasIndex(e => e.CiPacientes, "UQ__paciente__47B24837D7140704")
+                entity.HasIndex(e => e.CiPacientes, "UQ__paciente__47B248375D0D7882")
                     .IsUnique();
 
                 entity.Property(e => e.IdPacientes).HasColumnName("id_pacientes");
@@ -1206,11 +1154,11 @@ namespace MedicExpermed.Models
             modelBuilder.Entity<Pai>(entity =>
             {
                 entity.HasKey(e => e.IdPais)
-                    .HasName("PK__pais__0941A3A7F0C4FD68");
+                    .HasName("PK__pais__0941A3A732878B60");
 
                 entity.ToTable("pais");
 
-                entity.HasIndex(e => e.IsoPais, "UQ__pais__5515698E475AA531")
+                entity.HasIndex(e => e.IsoPais, "UQ__pais__5515698E37D31B6A")
                     .IsUnique();
 
                 entity.Property(e => e.IdPais).HasColumnName("id_pais");
@@ -1237,7 +1185,7 @@ namespace MedicExpermed.Models
             modelBuilder.Entity<Perfil>(entity =>
             {
                 entity.HasKey(e => e.IdPerfil)
-                    .HasName("PK__perfil__1D1C87689421C870");
+                    .HasName("PK__perfil__1D1C87682B2EA7B7");
 
                 entity.ToTable("perfil");
 
@@ -1262,14 +1210,14 @@ namespace MedicExpermed.Models
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(e => e.IdUsuario)
-                    .HasName("PK__usuario__4E3E04AD47E220EF");
+                    .HasName("PK__usuario__4E3E04ADCB15FE37");
 
                 entity.ToTable("usuario");
 
-                entity.HasIndex(e => e.CiUsuario, "UQ__usuario__38AEB2A8B2FE77A2")
+                entity.HasIndex(e => e.CiUsuario, "UQ__usuario__38AEB2A8EE1D94FA")
                     .IsUnique();
 
-                entity.HasIndex(e => e.EmailUsuario, "UQ__usuario__CD3151FFC7B68042")
+                entity.HasIndex(e => e.EmailUsuario, "UQ__usuario__CD3151FFB6A5CC63")
                     .IsUnique();
 
                 entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
