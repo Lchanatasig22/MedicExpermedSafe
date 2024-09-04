@@ -17,6 +17,7 @@ namespace MedicExpermed.Models
         public string? DosisMedicamento { get; set; }
         public string? ObservacionMedicamento { get; set; }
         public int EstadoMedicamento { get; set; }
+        public int? SecuencialMedicamento { get; set; }
 
         public virtual Medicamento? Medicamento { get; set; }
         public virtual ICollection<Consultum> Consulta { get; set; }

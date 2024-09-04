@@ -79,40 +79,40 @@ namespace MedicExpermed.Services
         {
             return ObtenerCatalogoPorCategoriaAsync("ALERGIAS");
         }
-        //ALERGIAS 
-        public async Task<int> ObtenerIdAlergiasNingunoAsync()
-        {
-            var tiposAlergias = await ObtenerAlergiasAsync();
+        ////ALERGIAS 
+        //public async Task<int> ObtenerIdAlergiasNingunoAsync()
+        //{
+        //    var tiposAlergias = await ObtenerAlergiasAsync();
 
-            // Busca el ID donde el nombre es "NINGUNO"
-            var ningunTipo = tiposAlergias.FirstOrDefault(tp => tp.DescripcionCatalogo.Equals("NINGUNA", StringComparison.OrdinalIgnoreCase));
+        //    // Busca el ID donde el nombre es "NINGUNO"
+        //    var ningunTipo = tiposAlergias.FirstOrDefault(tp => tp.DescripcionCatalogo.Equals("NINGUNA", StringComparison.OrdinalIgnoreCase));
 
-            if (ningunTipo == null)
-            {
-                throw new InvalidOperationException("No se encontró un tipo de parentesco con el nombre 'NINGUNO'.");
-            }
+        //    if (ningunTipo == null)
+        //    {
+        //        throw new InvalidOperationException("No se encontró un tipo de parentesco con el nombre 'NINGUNO'.");
+        //    }
 
-            return ningunTipo.IdCatalogo;
-        }
+        //    return ningunTipo.IdCatalogo;
+        //}
         public Task<List<Catalogo>> ObtenerCirugiasAsync()
         {
             return ObtenerCatalogoPorCategoriaAsync("CIRUGIAS");
         }
-        //ALERGIAS 
-        public async Task<int> ObtenerIdCirugiasNingunoAsync()
-        {
-            var tiposCirugias = await ObtenerCirugiasAsync();
+        ////ALERGIAS 
+        //public async Task<int> ObtenerIdCirugiasNingunoAsync()
+        //{
+        //    var tiposCirugias = await ObtenerCirugiasAsync();
 
-            // Busca el ID donde el nombre es "NINGUNO"
-            var ningunTipo = tiposCirugias.FirstOrDefault(tp => tp.DescripcionCatalogo.Equals("NINGUNA", StringComparison.OrdinalIgnoreCase));
+        //    // Busca el ID donde el nombre es "NINGUNO"
+        //    var ningunTipo = tiposCirugias.FirstOrDefault(tp => tp.DescripcionCatalogo.Equals("NINGUNA", StringComparison.OrdinalIgnoreCase));
 
-            if (ningunTipo == null)
-            {
-                throw new InvalidOperationException("No se encontró un tipo de parentesco con el nombre 'NINGUNO'.");
-            }
+        //    if (ningunTipo == null)
+        //    {
+        //        throw new InvalidOperationException("No se encontró un tipo de parentesco con el nombre 'NINGUNO'.");
+        //    }
 
-            return ningunTipo.IdCatalogo;
-        }
+        //    return ningunTipo.IdCatalogo;
+        //}
 
         //Otros
 

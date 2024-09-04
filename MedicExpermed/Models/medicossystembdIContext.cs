@@ -116,9 +116,7 @@ namespace MedicExpermed.Models
                     .HasMaxLength(1000)
                     .HasColumnName("obser_tuberculosis");
 
-                entity.Property(e => e.Otro)
-                    .HasMaxLength(1000)
-                    .HasColumnName("otro");
+                entity.Property(e => e.Otro).HasColumnName("otro");
 
                 entity.Property(e => e.ParentescocatalogoCancer).HasColumnName("parentescocatalogo_cancer");
 
@@ -247,6 +245,8 @@ namespace MedicExpermed.Models
 
                 entity.Property(e => e.ConsultaId).HasColumnName("consulta_id");
 
+                entity.Property(e => e.EstadoCita).HasColumnName("estado_cita");
+
                 entity.Property(e => e.FechacreacionCita)
                     .HasColumnType("datetime")
                     .HasColumnName("fechacreacion_cita")
@@ -367,6 +367,8 @@ namespace MedicExpermed.Models
 
                 entity.Property(e => e.PresuntivoDiagnosticos).HasColumnName("presuntivo_diagnosticos");
 
+                entity.Property(e => e.SecuencialDiagnostico).HasColumnName("secuencial_diagnostico");
+
                 entity.HasOne(d => d.Diagnostico)
                     .WithMany(p => p.ConsultaDiagnosticos)
                     .HasForeignKey(d => d.DiagnosticoId)
@@ -394,6 +396,8 @@ namespace MedicExpermed.Models
                     .HasMaxLength(1000)
                     .HasColumnName("observacion_imagen");
 
+                entity.Property(e => e.SecuencialImagen).HasColumnName("secuencial_imagen");
+
                 entity.HasOne(d => d.Imagen)
                     .WithMany(p => p.ConsultaImagens)
                     .HasForeignKey(d => d.ImagenId)
@@ -420,6 +424,8 @@ namespace MedicExpermed.Models
                 entity.Property(e => e.Observacion)
                     .HasMaxLength(1000)
                     .HasColumnName("observacion");
+
+                entity.Property(e => e.SecuencialLaboratorio).HasColumnName("secuencial_laboratorio");
 
                 entity.HasOne(d => d.CatalogoLaboratorio)
                     .WithMany(p => p.ConsultaLaboratorios)
@@ -454,6 +460,8 @@ namespace MedicExpermed.Models
                 entity.Property(e => e.ObservacionMedicamento)
                     .HasMaxLength(1000)
                     .HasColumnName("observacion_medicamento");
+
+                entity.Property(e => e.SecuencialMedicamento).HasColumnName("secuencial_medicamento");
 
                 entity.HasOne(d => d.Medicamento)
                     .WithMany(p => p.ConsultaMedicamentos)

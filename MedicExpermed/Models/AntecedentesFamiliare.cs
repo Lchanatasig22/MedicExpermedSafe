@@ -38,7 +38,7 @@ namespace MedicExpermed.Models
         public bool? MalFormacion { get; set; }
         public string? ObserMalFormacion { get; set; }
         public int? ParentescocatalogoMalformacion { get; set; }
-        public string? Otro { get; set; }
+        public bool? Otro { get; set; }
         public string? ObserOtro { get; set; }
         public int? ParentescocatalogoOtro { get; set; }
 

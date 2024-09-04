@@ -76,8 +76,8 @@ namespace MedicExpermed.Controllers
         public async Task<IActionResult> CrearConsulta()
         {
             int ningunTipoParienteId = await _catalogService.ObtenerIdParentescoNingunoAsync();
-            int ningunTipoAlergiaId = await _catalogService.ObtenerIdAlergiasNingunoAsync();
-            int ningunTipoCirugiasId = await _catalogService.ObtenerIdCirugiasNingunoAsync();
+            //int ningunTipoAlergiaId = await _catalogService.ObtenerIdAlergiasNingunoAsync();
+            //int ningunTipoCirugiasId = await _catalogService.ObtenerIdCirugiasNingunoAsync();
      
             ViewBag.UsuarioNombre = HttpContext.Session.GetString("UsuarioNombre");
             ViewBag.UsuarioId = HttpContext.Session.GetInt32("UsuarioId");
@@ -91,8 +91,8 @@ namespace MedicExpermed.Controllers
             {
 
                TipoParienteID = ningunTipoParienteId,
-                AlergiasID = new List<int> { ningunTipoAlergiaId }, // Corregido para asignar una lista
-                CirugiasID = new List<int> { ningunTipoCirugiasId }, // Corregido para asignar una lista
+                //AlergiasID = new List<int> { ningunTipoAlergiaId }, // Corregido para asignar una lista
+                //CirugiasID = new List<int> { ningunTipoCirugiasId }, // Corregido para asignar una lista
 
             };
 
