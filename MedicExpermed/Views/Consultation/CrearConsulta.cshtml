@@ -33,9 +33,8 @@
     <form role="form" id="consultationForm" method="post" asp-action="CrearConsulta">
         <!--Campos ocultos para manejo de variables-->
         <input type="hidden" class="form-control" asp-for="UsuarioCreacion" id="usuarioNombre" value="@ViewBag.UsuarioNombre" />
-        <input type="hidden" asp-for="MedicoID" id="medicoId" value="@ViewBag.UsuarioId" />
-        <input type="hidden" asp-for="EspecialidadID" id="especialidadId" value="@ViewBag.UsuarioIdEspecialidad" />
-        <input type="hidden" asp-for="FechaCreacion" id="FechacreacionConsulta" />
+        <input type="hidden" asp-for="MedicoId" id="medicoId" value="@ViewBag.UsuarioId" />
+        <input type="hidden" asp-for="EspecialidadId" id="especialidadId" value="@ViewBag.UsuarioIdEspecialidad" />
         <!--Primer Formulario-->
         <div class="setup-content" id="step-1">
             <div class="hr-text">
@@ -68,7 +67,7 @@
                 <div class="row g-3">
                     <div class="col-sm-3" hidden>
                         <label for="idPaciente">Identificador Paciente</label>
-                        <input type="text" asp-for="PacienteID" class="form-control" id="idPaciente" placeholder="Máximo 200 caracteres" readonly>
+                        <input type="text" asp-for="PacienteId" class="form-control" id="idPaciente" placeholder="Máximo 200 caracteres" readonly>
                     </div>
                     <div class="col-sm-3">
                         <label for="primerApellido">Primer apellido</label>
@@ -411,7 +410,7 @@
                 </div>
                 <div class="col-sm-3">
                     <label for="esdonante"> Parentesco</label>
-                    <select class="form-select" asp-for="TipoParienteID" id="tipoParienteSelect" required>
+                    <select class="form-select" asp-for="TipoPariente" id="tipoParienteSelect" required>
                         <option value="">Seleccione...</option>
                         @if (ViewBag.TiposPariente != null)
                         {
@@ -424,7 +423,7 @@
                 </div>
                 <div class="col-sm-3">
                     <label for="telefonoPariente">Telefono</label>
-                    <input type="tel" class="form-control" asp-for="Telefono" id="telefonoPariente" placeholder="Ingrese el telefono" maxlength="10" pattern="\d{10}">
+                    <input type="tel" class="form-control" asp-for="TelefonoPariente" id="telefonoPariente" placeholder="Ingrese el telefono" maxlength="10" pattern="\d{10}">
                 </div>
 
                 <div class="col-sm-12">
@@ -448,7 +447,7 @@
                     <div class="row mb-3">
                         <div class="col-sm-3">
                             <span><i class="fas fa-allergies"></i> Alergias</span>
-                            <select class="form-select select2-tags" asp-for="AlergiasID" id="tipoAlergiaSelect" multiple="multiple">
+                            <select class="form-select select2-tags" asp-for="Alergias" id="tipoAlergiaSelect" multiple="multiple">
                                 <option value="">Buscar</option>
                                 @if (ViewBag.TiposAlergias != null)
                                 {
@@ -464,10 +463,9 @@
                         <!-- Contenedor para los inputs ocultos de alergias -->
                         <div id="hiddenAlergiaInputsContainer"></div>
 
-                        <input type="hidden" name="ObserAlergias" asp-for="ObserAlergias" value="Sin Obervacion" />
                         <div class="col-sm-3">
                             <span><i class="fas fa-syringe"></i> Cirugías</span>
-                            <select class="form-select select2-tags" asp-for="CirugiasID" id="tipoCirugiaSelect" multiple="multiple">
+                            <select class="form-select select2-tags" asp-for="Cirugias" id="tipoCirugiaSelect" multiple="multiple">
                                 <option value="">Buscar</option>
                                 @if (ViewBag.TiposCirugias != null)
                                 {
@@ -483,7 +481,6 @@
                         <!-- Contenedor para los inputs ocultos de cirugías -->
                         <div id="hiddenCirugiaInputsContainer"></div>
 
-                        <input type="hidden" name="ObserCirugias" asp-for="ObserCirugias" value="Sin Obervacion" />
 
                     </div>
                 </div>
@@ -512,7 +509,7 @@
                             <div class="col-sm-12 consulta-antecedente-observacion" id="consulta-observacion-cardiopatia" style="display: none;">
                                 <div class="row">
                                     <div class="col-6">
-                                        <select class="form-select select2" asp-for="ConsultaAntecedentesFamiliares.ParentescocatalogoCardiopatia" id="tipoDocumentoSelectCardiopatia">
+                                        <select class="form-select select2" asp-for="car" id="tipoDocumentoSelectCardiopatia">
                                             <option value="183">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {

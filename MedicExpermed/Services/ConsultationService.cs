@@ -93,75 +93,92 @@ namespace MedicExpermed.Services
         /// <param name="consultation"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<(int IdConsulta, string Secuencial)> CreateConsultationAsync(Consultation consultaDto)
+        public void CreateConsultation(Consultum consultation)
         {
-            using (var connection = new SqlConnection(_context.Database.GetConnectionString()))
+            using (SqlConnection conn = new SqlConnection(_context.Database.GetConnectionString()))
             {
-                var command = new SqlCommand("sp_CreateConsultation", connection)
-                {
-                    CommandType = CommandType.StoredProcedure
-                };
+                SqlCommand cmd = new SqlCommand("sp_CreateConsultation", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
 
-                // Agregar parámetros al comando
-                command.Parameters.AddWithValue("@FechaCreacion", consultaDto.FechaCreacion);
-                command.Parameters.AddWithValue("@UsuarioCreacion", consultaDto.UsuarioCreacion);
-                command.Parameters.AddWithValue("@Historial", consultaDto.Historial);
-                command.Parameters.AddWithValue("@PacienteID", consultaDto.PacienteID);
-                command.Parameters.AddWithValue("@Motivo", consultaDto.Motivo);
-                command.Parameters.AddWithValue("@Enfermedad", consultaDto.Enfermedad);
-                command.Parameters.AddWithValue("@NombrePariente", consultaDto.NombrePariente);
-                command.Parameters.AddWithValue("@SignosAlarma", consultaDto.SignosAlarma);
-                command.Parameters.AddWithValue("@ReconocFarmacologicas", consultaDto.ReconocFarmacologicas);
-                command.Parameters.AddWithValue("@TipoParienteID", consultaDto.TipoParienteID);
-                command.Parameters.AddWithValue("@Telefono", consultaDto.Telefono);
-                command.Parameters.AddWithValue("@Temperatura", consultaDto.Temperatura);
-                command.Parameters.AddWithValue("@FrecuenciaRespiratoria", consultaDto.FrecuenciaRespiratoria);
-                command.Parameters.AddWithValue("@PresionArterialSistolica", consultaDto.PresionArterialSistolica);
-                command.Parameters.AddWithValue("@PresionArterialDiastolica", consultaDto.PresionArterialDiastolica);
-                command.Parameters.AddWithValue("@Pulso", consultaDto.Pulso);
-                command.Parameters.AddWithValue("@Peso", consultaDto.Peso);
-                command.Parameters.AddWithValue("@Talla", consultaDto.Talla);
-                command.Parameters.AddWithValue("@PlanTratamiento", consultaDto.PlanTratamiento);
-                command.Parameters.AddWithValue("@Observacion", consultaDto.Observacion);
-                command.Parameters.AddWithValue("@AntecedentesPersonales", consultaDto.AntecedentesPersonales);
-                command.Parameters.AddWithValue("@DiasIncapacidad", consultaDto.DiasIncapacidad);
-                command.Parameters.AddWithValue("@MedicoID", consultaDto.MedicoID);
-                command.Parameters.AddWithValue("@EspecialidadID", consultaDto.EspecialidadID);
-                command.Parameters.AddWithValue("@AlergiasID", consultaDto.AlergiasID);
-                command.Parameters.AddWithValue("@ObserAlergias", consultaDto.ObserAlergias);
-                command.Parameters.AddWithValue("@CirugiasID", consultaDto.CirugiasID);
-                command.Parameters.AddWithValue("@ObserCirugias", consultaDto.ObserCirugias);
-                command.Parameters.AddWithValue("@EstadoConsulta", consultaDto.EstadoConsulta);
-                command.Parameters.AddWithValue("@TipoConsulta", consultaDto.TipoConsulta);
-                command.Parameters.AddWithValue("@NotasEvolucion", consultaDto.NotasEvolucion);
-                command.Parameters.AddWithValue("@ConsultaPrincipal", consultaDto.ConsultaPrincipal);
-                command.Parameters.AddWithValue("@ActivoConsulta", consultaDto.ActivoConsulta);
+                // Parámetros de la tabla consulta
+                cmd.Parameters.AddWithValue("@usuariocreacion_consulta", consultation.UsuariocreacionConsulta);
+                cmd.Parameters.AddWithValue("@historial_consulta", consultation.HistorialConsulta);
+                cmd.Parameters.AddWithValue("@paciente_consulta_p", consultation.PacienteConsultaP);
+                cmd.Parameters.AddWithValue("@motivo_consulta", consultation.MotivoConsulta);
+                cmd.Parameters.AddWithValue("@enfermedad_consulta", consultation.EnfermedadConsulta);
+                cmd.Parameters.AddWithValue("@nombrepariente_consulta", consultation.NombreparienteConsulta);
+                cmd.Parameters.AddWithValue("@signosalarma_consulta", consultation.SignosalarmaConsulta);
+                cmd.Parameters.AddWithValue("@reconofarmacologicas", consultation.Reconofarmacologicas);
+                cmd.Parameters.AddWithValue("@tipopariente_consulta", consultation.TipoparienteConsulta);
+                cmd.Parameters.AddWithValue("@telefono_pariente_consulta", consultation.TelefonoParienteConsulta);
+                cmd.Parameters.AddWithValue("@temperatura_consulta", consultation.TemperaturaConsulta);
+                cmd.Parameters.AddWithValue("@frecuenciarespiratoria_consulta", consultation.FrecuenciarespiratoriaConsulta);
+                cmd.Parameters.AddWithValue("@presionarterialsistolica_consulta", consultation.PresionarterialsistolicaConsulta);
+                cmd.Parameters.AddWithValue("@presionarterialdiastolica_consulta", consultation.PresionarterialdiastolicaConsulta);
+                cmd.Parameters.AddWithValue("@pulso_consulta", consultation.PulsoConsulta);
+                cmd.Parameters.AddWithValue("@peso_consulta", consultation.PesoConsulta);
+                cmd.Parameters.AddWithValue("@talla_consulta", consultation.TallaConsulta);
+                cmd.Parameters.AddWithValue("@plantratamiento_consulta", consultation.PlantratamientoConsulta);
+                cmd.Parameters.AddWithValue("@observacion_consulta", consultation.ObservacionConsulta);
+                cmd.Parameters.AddWithValue("@antecedentespersonales_consulta", consultation.AntecedentespersonalesConsulta);
+                cmd.Parameters.AddWithValue("@diasincapacidad_consulta", consultation.DiasincapacidadConsulta);
+                cmd.Parameters.AddWithValue("@medico_consulta_d", consultation.MedicoConsultaD);
+                cmd.Parameters.AddWithValue("@especialidad_id", consultation.EspecialidadId);
+                cmd.Parameters.AddWithValue("@tipo_consulta_c", consultation.TipoConsulta);
+                cmd.Parameters.AddWithValue("@notasevolucion_consulta", consultation.NotasEvolucion);
+                cmd.Parameters.AddWithValue("@consultaprincipal_consulta", consultation.ConsultaPrincipal);
+                cmd.Parameters.AddWithValue("@estado_consulta_c", consultation.EstadoConsulta);
 
-                // Parámetros para las tablas secundarias (JSON)
-                command.Parameters.AddWithValue("@Medicamentos", consultaDto.Medicamentos);
-                command.Parameters.AddWithValue("@Laboratorios", consultaDto.Laboratorios);
-                command.Parameters.AddWithValue("@Imagenes", consultaDto.Imagenes);
-                command.Parameters.AddWithValue("@Diagnosticos", consultaDto.Diagnosticos);
-                command.Parameters.AddWithValue("@Cirugias", consultaDto.Cirugias);
-                command.Parameters.AddWithValue("@Alergias", consultaDto.Alergias);
+                // Otros parámetros adicionales (organos_sistemas, examen_fisico, antecedentes_familiares, etc.)
+                cmd.Parameters.AddWithValue("@org_sentidos", consultation.OrgSentidos);
+                cmd.Parameters.AddWithValue("@obser_org_sentidos", consultation.ObserOrgSentidos);
+                cmd.Parameters.AddWithValue("@respiratorio", consultation.Respiratorio);
+                cmd.Parameters.AddWithValue("@obser_respiratorio", consultation.ObserRespiratorio);
+                cmd.Parameters.AddWithValue("@cardio_vascular", consultation.CardioVascular);
+                cmd.Parameters.AddWithValue("@obser_cardio_vascular", consultation.ObserCardioVascular);
+                cmd.Parameters.AddWithValue("@digestivo", consultation.Digestivo);
+                cmd.Parameters.AddWithValue("@obser_digestivo", consultation.ObserDigestivo);
+                cmd.Parameters.AddWithValue("@genital", consultation.Genital);
+                cmd.Parameters.AddWithValue("@obser_genital", consultation.ObserGenital);
+                cmd.Parameters.AddWithValue("@urinario", consultation.Urinario);
+                cmd.Parameters.AddWithValue("@obser_urinario", consultation.ObserUrinario);
+                cmd.Parameters.AddWithValue("@m_esqueletico", consultation.MEsqueletico);
+                cmd.Parameters.AddWithValue("@obser_m_esqueletico", consultation.ObserMEsqueletico);
+                cmd.Parameters.AddWithValue("@endocrino", consultation.Endocrino);
+                cmd.Parameters.AddWithValue("@obser_endocrino", consultation.ObserEndocrino);
+                cmd.Parameters.AddWithValue("@linfatico", consultation.Linfatico);
+                cmd.Parameters.AddWithValue("@obser_linfatico", consultation.ObserLinfatico);
+                cmd.Parameters.AddWithValue("@nervioso", consultation.Nervioso);
+                cmd.Parameters.AddWithValue("@obser_nervioso", consultation.ObserNervioso);
 
-                // Parámetros para tablas de uno a uno (JSON)
-                command.Parameters.AddWithValue("@AntecedentesFamiliares", consultaDto.ConsultaAntecedentesFamiliares);
-                command.Parameters.AddWithValue("@OrganosSistemas", consultaDto.ConsultaOrganosSistemas);
-                command.Parameters.AddWithValue("@ExamenFisico", consultaDto.ConsultaExamenFisico);
+                // Parámetros para examen físico
+                cmd.Parameters.AddWithValue("@cabeza", consultation.Cabeza);
+                cmd.Parameters.AddWithValue("@obser_cabeza", consultation.ObserCabeza);
+                cmd.Parameters.AddWithValue("@cuello", consultation.Cuello);
+                cmd.Parameters.AddWithValue("@obser_cuello", consultation.ObserCuello);
+                cmd.Parameters.AddWithValue("@torax", consultation.Torax);
+                cmd.Parameters.AddWithValue("@obser_torax", consultation.ObserTorax);
+                cmd.Parameters.AddWithValue("@abdomen", consultation.Abdomen);
+                cmd.Parameters.AddWithValue("@obser_abdomen", consultation.ObserAbdomen);
+                cmd.Parameters.AddWithValue("@pelvis", consultation.Pelvis);
+                cmd.Parameters.AddWithValue("@obser_pelvis", consultation.ObserPelvis);
+                cmd.Parameters.AddWithValue("@extremidades", consultation.Extremidades);
+                cmd.Parameters.AddWithValue("@obser_extremidades", consultation.ObserExtremidades);
 
-                await connection.OpenAsync();
+                // Parámetros tipo tabla (DataTable)
+                cmd.Parameters.AddWithValue("@Alergias", consultation.Alergias);
+                cmd.Parameters.AddWithValue("@Cirugias", consultation.Cirugias);
+                cmd.Parameters.AddWithValue("@Medicamentos", consultation.Medicamentos);
+                cmd.Parameters.AddWithValue("@Laboratorio", consultation.Laboratorio);
+                cmd.Parameters.AddWithValue("@Imagenes", consultation.Imagenes);
+                cmd.Parameters.AddWithValue("@Diagnosticos", consultation.Diagnosticos);
 
-                using (var reader = await command.ExecuteReaderAsync())
-                {
-                    if (await reader.ReadAsync())
-                    {
-                        return (reader.GetInt32(0), reader.GetString(1));
-                    }
-                }
+                // Abrir la conexión y ejecutar el procedimiento
+                conn.Open();
+                cmd.ExecuteNonQuery();
             }
-
-            return (0, null); // Retornar valor por defecto si no se obtiene un resultado
         }
+
+
     }
 }
