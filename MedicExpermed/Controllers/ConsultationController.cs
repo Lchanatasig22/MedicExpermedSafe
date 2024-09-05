@@ -88,131 +88,219 @@ namespace MedicExpermed.Controllers
 
             return View(model);
         }
-
-        [HttpPost("Crear-Consulta")]
-        public IActionResult CrearConsulta([FromBody] ConsultationDto consultaDto)
+        [HttpPost]
+        public async Task<IActionResult> CrearConsulta(
+               string usuariocreacionConsulta,
+               string historialConsulta,
+               int pacienteConsultaP,
+               string motivoConsulta,
+               string enfermedadConsulta,
+               string nombreparienteConsulta,
+               string signosalarmaConsulta,
+               string reconofarmacologicas,
+               int tipoparienteConsulta,
+               string telefonoParienteConsulta,
+               string temperaturaConsulta,
+               string frecuenciarespiratoriaConsulta,
+               string presionarterialsistolicaConsulta,
+               string presionarterialdiastolicaConsulta,
+               string pulsoConsulta,
+               string pesoConsulta,
+               string tallaConsulta,
+               string plantratamientoConsulta,
+               string observacionConsulta,
+               string antecedentespersonalesConsulta,
+               int diasincapacidadConsulta,
+               int medicoConsultaD,
+               int especialidadId,
+               int tipoConsultaC,
+               string notasevolucionConsulta,
+               string consultaprincipalConsulta,
+               int estadoConsultaC,
+               // Parámetros de órganos y sistemas
+               bool orgSentidos,
+               string obserOrgSentidos,
+               bool respiratorio,
+               string obserRespiratorio,
+               bool cardioVascular,
+               string obserCardioVascular,
+               bool digestivo,
+               string obserDigestivo,
+               bool genital,
+               string obserGenital,
+               bool urinario,
+               string obserUrinario,
+               bool mEsqueletico,
+               string obserMEsqueletico,
+               bool endocrino,
+               string obserEndocrino,
+               bool linfatico,
+               string obserLinfatico,
+               bool nervioso,
+               string obserNervioso,
+               // Parámetros de examen físico
+               bool cabeza,
+               string obserCabeza,
+               bool cuello,
+               string obserCuello,
+               bool torax,
+               string obserTorax,
+               bool abdomen,
+               string obserAbdomen,
+               bool pelvis,
+               string obserPelvis,
+               bool extremidades,
+               string obserExtremidades,
+               // Parámetros de antecedentes familiares
+               bool cardiopatia,
+               string obserCardiopatia,
+               int parentescocatalogoCardiopatia,
+               bool diabetes,
+               string obserDiabetes,
+               int parentescocatalogoDiabetes,
+               bool enfCardiovascular,
+               string obserEnfCardiovascular,
+               int parentescocatalogoEnfCardiovascular,
+               bool hipertension,
+               string obserHipertension,
+               int parentescocatalogoHipertension,
+               bool cancer,
+               string obserCancer,
+               int parentescocatalogoCancer,
+               bool tuberculosis,
+               string obserTuberculosis,
+               int parentescocatalogoTuberculosis,
+               bool enfMental,
+               string obserEnfMental,
+               int parentescocatalogoEnfMental,
+               bool enfInfecciosa,
+               string obserEnfInfecciosa,
+               int parentescocatalogoEnfInfecciosa,
+               bool malFormacion,
+               string obserMalFormacion,
+               int parentescocatalogoMalFormacion,
+               bool otro,
+               string obserOtro,
+               int parentescocatalogoOtro,
+               // Listas de alergias, cirugías, etc.
+               List<ConsultaAlergia> alergias,
+               List<ConsultaCirugia> cirugias,
+               List<ConsultaMedicamento> medicamentos,
+               List<ConsultaLaboratorio> laboratorios,
+               List<ConsultaImagen> imagenes,
+               List<ConsultaDiagnostico> diagnosticos)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             try
             {
-                // Mapeamos el DTO a la entidad Consultation que el servicio espera
-                var consultation = new Consultation
-                {
-                    UsuarioCreacion = consultaDto.UsuarioCreacion,
-                    Historial = consultaDto.Historial,
-                    PacienteId = consultaDto.PacienteId,
-                    Motivo = consultaDto.Motivo,
-                    Enfermedad = consultaDto.Enfermedad,
-                    NombrePariente = consultaDto.NombrePariente,
-                    SignosAlarma = consultaDto.SignosAlarma,
-                    ReconoFarmacologicas = consultaDto.ReconoFarmacologicas,
-                    TipoPariente = consultaDto.TipoPariente,
-                    TelefonoPariente = consultaDto.TelefonoPariente,
-                    Temperatura = consultaDto.Temperatura,
-                    FrecuenciaRespiratoria = consultaDto.FrecuenciaRespiratoria,
-                    PresionArterialSistolica = consultaDto.PresionArterialSistolica,
-                    PresionArterialDiastolica = consultaDto.PresionArterialDiastolica,
-                    Pulso = consultaDto.Pulso,
-                    Peso = consultaDto.Peso,
-                    Talla = consultaDto.Talla,
-                    PlanTratamiento = consultaDto.PlanTratamiento,
-                    Observacion = consultaDto.Observacion,
-                    AntecedentesPersonales = consultaDto.AntecedentesPersonales,
-                    DiasIncapacidad = consultaDto.DiasIncapacidad,
-                    MedicoId = consultaDto.MedicoId,
-                    EspecialidadId = consultaDto.EspecialidadId,
-                    TipoConsulta = consultaDto.TipoConsulta,
-                    NotasEvolucion = consultaDto.NotasEvolucion,
-                    ConsultaPrincipal = consultaDto.ConsultaPrincipal,
-                    EstadoConsulta = consultaDto.EstadoConsulta,
+                // Llamar al servicio para crear la consulta
+                await _consultationService.CrearConsultaAsync(
+                    usuariocreacionConsulta,
+                    historialConsulta,
+                    pacienteConsultaP,
+                    motivoConsulta,
+                    enfermedadConsulta,
+                    nombreparienteConsulta,
+                    signosalarmaConsulta,
+                    reconofarmacologicas,
+                    tipoparienteConsulta,
+                    telefonoParienteConsulta,
+                    temperaturaConsulta,
+                    frecuenciarespiratoriaConsulta,
+                    presionarterialsistolicaConsulta,
+                    presionarterialdiastolicaConsulta,
+                    pulsoConsulta,
+                    pesoConsulta,
+                    tallaConsulta,
+                    plantratamientoConsulta,
+                    observacionConsulta,
+                    antecedentespersonalesConsulta,
+                    diasincapacidadConsulta,
+                    medicoConsultaD,
+                    especialidadId,
+                    tipoConsultaC,
+                    notasevolucionConsulta,
+                    consultaprincipalConsulta,
+                    estadoConsultaC,
+                    orgSentidos,
+                    obserOrgSentidos,
+                    respiratorio,
+                    obserRespiratorio,
+                    cardioVascular,
+                    obserCardioVascular,
+                    digestivo,
+                    obserDigestivo,
+                    genital,
+                    obserGenital,
+                    urinario,
+                    obserUrinario,
+                    mEsqueletico,
+                    obserMEsqueletico,
+                    endocrino,
+                    obserEndocrino,
+                    linfatico,
+                    obserLinfatico,
+                    nervioso,
+                    obserNervioso,
+                    cabeza,
+                    obserCabeza,
+                    cuello,
+                    obserCuello,
+                    torax,
+                    obserTorax,
+                    abdomen,
+                    obserAbdomen,
+                    pelvis,
+                    obserPelvis,
+                    extremidades,
+                    obserExtremidades,
+                    cardiopatia,
+                    obserCardiopatia,
+                    parentescocatalogoCardiopatia,
+                    diabetes,
+                    obserDiabetes,
+                    parentescocatalogoDiabetes,
+                    enfCardiovascular,
+                    obserEnfCardiovascular,
+                    parentescocatalogoEnfCardiovascular,
+                    hipertension,
+                    obserHipertension,
+                    parentescocatalogoHipertension,
+                    cancer,
+                    obserCancer,
+                    parentescocatalogoCancer,
+                    tuberculosis,
+                    obserTuberculosis,
+                    parentescocatalogoTuberculosis,
+                    enfMental,
+                    obserEnfMental,
+                    parentescocatalogoEnfMental,
+                    enfInfecciosa,
+                    obserEnfInfecciosa,
+                    parentescocatalogoEnfInfecciosa,
+                    malFormacion,
+                    obserMalFormacion,
+                    parentescocatalogoMalFormacion,
+                    otro,
+                    obserOtro,
+                    parentescocatalogoOtro,
+                    alergias,
+                    cirugias,
+                    medicamentos,
+                    laboratorios,
+                    imagenes,
+                    diagnosticos
+                );
 
-                    OrgSentidos = consultaDto.OrgSentidos,
-                    ObserOrgSentidos = consultaDto.ObserOrgSentidos,
-                    Respiratorio = consultaDto.Respiratorio,
-                    ObserRespiratorio = consultaDto.ObserRespiratorio,
-                    CardioVascular = consultaDto.CardioVascular,
-                    ObserCardioVascular = consultaDto.ObserCardioVascular,
-                    Digestivo = consultaDto.Digestivo,
-                    ObserDigestivo = consultaDto.ObserDigestivo,
-                    Genital = consultaDto.Genital,
-                    ObserGenital = consultaDto.ObserGenital,
-                    Urinario = consultaDto.Urinario,
-                    ObserUrinario = consultaDto.ObserUrinario,
-                    MEsqueletico = consultaDto.MEsqueletico,
-                    ObserMEsqueletico = consultaDto.ObserMEsqueletico,
-                    Endocrino = consultaDto.Endocrino,
-                    ObserEndocrino = consultaDto.ObserEndocrino,
-                    Linfatico = consultaDto.Linfatico,
-                    ObserLinfatico = consultaDto.ObserLinfatico,
-                    Nervioso = consultaDto.Nervioso,
-                    ObserNervioso = consultaDto.ObserNervioso,
-
-                    Cabeza = consultaDto.Cabeza,
-                    ObserCabeza = consultaDto.ObserCabeza,
-                    Cuello = consultaDto.Cuello,
-                    ObserCuello = consultaDto.ObserCuello,
-                    Torax = consultaDto.Torax,
-                    ObserTorax = consultaDto.ObserTorax,
-                    Abdomen = consultaDto.Abdomen,
-                    ObserAbdomen = consultaDto.ObserAbdomen,
-                    Pelvis = consultaDto.Pelvis,
-                    ObserPelvis = consultaDto.ObserPelvis,
-                    Extremidades = consultaDto.Extremidades,
-                    ObserExtremidades = consultaDto.ObserExtremidades,
-
-                    // Parámetros tipo tabla
-                    Alergias = CreateDataTable(consultaDto.Alergias),
-                    Cirugias = CreateDataTable(consultaDto.Cirugias),
-                    Medicamentos = CreateDataTable(consultaDto.Medicamentos),
-                    Laboratorio = CreateDataTable(consultaDto.Laboratorio),
-                    Imagenes = CreateDataTable(consultaDto.Imagenes),
-                    Diagnosticos = CreateDataTable(consultaDto.Diagnosticos)
-                };
-
-                // Llamada al servicio que ejecuta el procedimiento almacenado
-                _consultationService.CreateConsultation(consultation);
-
-                return Ok("Consulta creada exitosamente.");
+                // Redirigir o devolver un resultado exitoso
+                return RedirectToAction("ConsultaCreada"); // Ajusta según la lógica que necesites
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear la consulta.");
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error interno del servidor.");
+                // Manejo de errores
+                ModelState.AddModelError(string.Empty, $"Error al crear la consulta: {ex.Message}");
+                return View(); // Devuelve la vista con los errores, si es necesario
             }
         }
-
-        // Método auxiliar para convertir listas a DataTable
-        private DataTable CreateDataTable<T>(List<T> items)
-        {
-            DataTable table = new DataTable();
-            if (items == null || items.Count == 0)
-                return table;
-
-            // Crear columnas basadas en las propiedades del objeto
-            var properties = typeof(T).GetProperties();
-            foreach (var prop in properties)
-            {
-                table.Columns.Add(prop.Name, prop.PropertyType);
-            }
-
-            // Llenar el DataTable con datos
-            foreach (var item in items)
-            {
-                var row = table.NewRow();
-                foreach (var prop in properties)
-                {
-                    row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
-                }
-                table.Rows.Add(row);
-            }
-
-            return table;
-        }
-
         [HttpGet("Buscar")]
         public async Task<IActionResult> BuscarPacientes(int? cedula, string primerNombre, string primerApellido)
         {
