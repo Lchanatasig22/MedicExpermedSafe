@@ -39,12 +39,12 @@ namespace MedicExpermed.Models
         public int EstadoConsulta { get; set; } // Estado de la consulta
 
         // Relaciones con otras tablas
-        public ICollection<ConsultaAlergia> Alergias { get; set; } // Lista de alergias asociadas a la consulta
-        public ICollection<ConsultaCirugia> Cirugias { get; set; } // Lista de cirugías asociadas a la consulta
-        public ICollection<ConsultaMedicamento> Medicamentos { get; set; } // Lista de medicamentos asociados
-        public ICollection<ConsultaLaboratorio> Laboratorios { get; set; } // Lista de laboratorios asociados
-        public ICollection<ConsultaImagen> Imagenes { get; set; } // Lista de imágenes asociadas
-        public ICollection<ConsultaDiagnostico> Diagnosticos { get; set; } // Lista de diagnósticos asociados
+        public List<ConsultaAlergia> Alergias { get; set; } // Lista de alergias asociadas a la consulta
+        public List<ConsultaCirugia> Cirugias { get; set; } // Lista de cirugías asociadas a la consulta
+        public List<ConsultaMedicamento> Medicamentos { get; set; } // Lista de medicamentos asociados
+        public List<ConsultaLaboratorio> Laboratorios { get; set; } // Lista de laboratorios asociados
+        public List<ConsultaImagen> Imagenes { get; set; } // Lista de imágenes asociadas
+        public List<ConsultaDiagnostico> Diagnosticos { get; set; } // Lista de diagnósticos asociados
         public OrganosSistema OrganosSistemas { get; set; } // Órganos y sistemas asociados
         public ExamenFisico ExamenFisico { get; set; } // Examen físico asociado
         public AntecedentesFamiliare AntecedentesFamiliares { get; set; } // Antecedentes familiares asociados
@@ -52,6 +52,8 @@ namespace MedicExpermed.Models
         // Constructor que inicializa los objetos complejos
         public Consultation()
         {
+            AntecedentesFamiliares = new AntecedentesFamiliare();
+
             Alergias = new List<ConsultaAlergia>();
             Cirugias = new List<ConsultaCirugia>();
             Medicamentos = new List<ConsultaMedicamento>();
@@ -60,7 +62,6 @@ namespace MedicExpermed.Models
             Diagnosticos = new List<ConsultaDiagnostico>();
             OrganosSistemas = new OrganosSistema();
             ExamenFisico = new ExamenFisico();
-            AntecedentesFamiliares = new AntecedentesFamiliare();
         }
     }
 }

@@ -336,7 +336,7 @@ namespace MedicExpermed.Controllers
             int id,
             [FromBody] Consultation request)
         {
-            if (id != request.IdConsulta)
+            if (id != request.Id)
             {
                 return BadRequest("El ID de la consulta no coincide con el ID en el cuerpo de la solicitud.");
             }
@@ -409,7 +409,7 @@ namespace MedicExpermed.Controllers
                     // Parámetros para antecedentes familiares
                     request.AntecedentesFamiliares.Cardiopatia,
                     request.AntecedentesFamiliares.ObserCardiopatia,
-                    request.AntecedentesFamiliares.ParentescoCatalogoCardiopatia,
+                    request.AntecedentesFamiliares.ParentescocatalogoCardiopatia,
                     request.AntecedentesFamiliares.Diabetes,
                     request.AntecedentesFamiliares.ObserDiabetes,
                     request.AntecedentesFamiliares.ParentescocatalogoDiabetes,
