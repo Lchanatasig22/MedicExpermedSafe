@@ -302,6 +302,159 @@ namespace MedicExpermed.Controllers
                 return View(); // Devuelve la vista con los errores, si es necesario
             }
         }
+
+
+
+
+        [HttpGet("Editar-Consulta")]
+        public async Task<IActionResult> EditarConsulta()
+        {
+            int ningunTipoParienteId = await _catalogService.ObtenerIdParentescoNingunoAsync();
+
+            ViewBag.UsuarioNombre = HttpContext.Session.GetString("UsuarioNombre");
+            ViewBag.UsuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            ViewBag.UsuarioIdEspecialidad = HttpContext.Session.GetInt32("UsuarioIdEspecialidad");
+
+            await CargarListasDesplegables();
+
+            var model = new Consultation
+            {
+                TipoPariente = ningunTipoParienteId,
+                FechaCreacion = DateTime.Now,
+            };
+
+
+
+            return View(model);
+        }
+
+
+
+        // Endpoint para actualizar una consulta existente
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateConsultation(
+            int id,
+            [FromBody] Consultation request)
+        {
+            if (id != request.IdConsulta)
+            {
+                return BadRequest("El ID de la consulta no coincide con el ID en el cuerpo de la solicitud.");
+            }
+
+            try
+            {
+                await _consultationService.ActualizarConsultaAsync(
+                    request.Id,
+                    request.UsuarioCreacion,
+                    request.HistorialConsulta,
+                    request.PacienteId,
+                    request.MotivoConsulta,
+                    request.EnfermedadConsulta,
+                    request.NombrePariente,
+                    request.SignosAlarma,
+                    request.ReconocimientoFarmacologico,
+                    request.TipoPariente,
+                    request.TelefonoPariente,
+                    request.Temperatura,
+                    request.FrecuenciaRespiratoria,
+                    request.PresionArterialSistolica,
+                    request.PresionArterialDiastolica,
+                    request.Pulso,
+                    request.Peso,
+                    request.Talla,
+                    request.PlanTratamiento,
+                    request.Observacion,
+                    request.AntecedentesPersonales,
+                    request.DiasIncapacidad,
+                    request.MedicoId,
+                    request.EspecialidadId,
+                    request.TipoConsultaId,
+                    request.NotasEvolucion,
+                    request.ConsultaPrincipal,
+                    request.EstadoConsulta,
+                    // Parámetros para órganos y sistemas
+                    request.OrganosSistemas.OrgSentidos,
+                    request.OrganosSistemas.ObserOrgSentidos,
+                    request.OrganosSistemas.Respiratorio,
+                    request.OrganosSistemas.ObserRespiratorio,
+                    request.OrganosSistemas.CardioVascular,
+                    request.OrganosSistemas.ObserCardioVascular,
+                    request.OrganosSistemas.Digestivo,
+                    request.OrganosSistemas.ObserDigestivo,
+                    request.OrganosSistemas.Genital,
+                    request.OrganosSistemas.ObserGenital,
+                    request.OrganosSistemas.Urinario,
+                    request.OrganosSistemas.ObserUrinario,
+                    request.OrganosSistemas.MEsqueletico,
+                    request.OrganosSistemas.ObserMEsqueletico,
+                    request.OrganosSistemas.Endocrino,
+                    request.OrganosSistemas.ObserEndocrino,
+                    request.OrganosSistemas.Linfatico,
+                    request.OrganosSistemas.ObserLinfatico,
+                    request.OrganosSistemas.Nervioso,
+                    request.OrganosSistemas.ObserNervioso,
+                    // Parámetros para examen físico
+                    request.ExamenFisico.Cabeza,
+                    request.ExamenFisico.ObserCabeza,
+                    request.ExamenFisico.Cuello,
+                    request.ExamenFisico.ObserCuello,
+                    request.ExamenFisico.Torax,
+                    request.ExamenFisico.ObserTorax,
+                    request.ExamenFisico.Abdomen,
+                    request.ExamenFisico.ObserAbdomen,
+                    request.ExamenFisico.Pelvis,
+                    request.ExamenFisico.ObserPelvis,
+                    request.ExamenFisico.Extremidades,
+                    request.ExamenFisico.ObserExtremidades,
+                    // Parámetros para antecedentes familiares
+                    request.AntecedentesFamiliares.Cardiopatia,
+                    request.AntecedentesFamiliares.ObserCardiopatia,
+                    request.AntecedentesFamiliares.ParentescoCatalogoCardiopatia,
+                    request.AntecedentesFamiliares.Diabetes,
+                    request.AntecedentesFamiliares.ObserDiabetes,
+                    request.AntecedentesFamiliares.ParentescocatalogoDiabetes,
+                    request.AntecedentesFamiliares.EnfCardiovascular,
+                    request.AntecedentesFamiliares.ObserEnfCardiovascular,
+                    request.AntecedentesFamiliares.ParentescocatalogoEnfcardiovascular,
+                    request.AntecedentesFamiliares.Hipertension,
+                    request.AntecedentesFamiliares.ObserHipertension,
+                    request.AntecedentesFamiliares.ParentescocatalogoHipertension,
+                    request.AntecedentesFamiliares.Cancer,
+                    request.AntecedentesFamiliares.ObserCancer,
+                    request.AntecedentesFamiliares.ParentescocatalogoCancer,
+                    request.AntecedentesFamiliares.Tuberculosis,
+                    request.AntecedentesFamiliares.ObserTuberculosis,
+                    request.AntecedentesFamiliares.ParentescocatalogoTuberculosis,
+                    request.AntecedentesFamiliares.EnfMental,
+                    request.AntecedentesFamiliares.ObserEnfMental,
+                    request.AntecedentesFamiliares.ParentescocatalogoEnfmental,
+                    request.AntecedentesFamiliares.EnfInfecciosa,
+                    request.AntecedentesFamiliares.ObserEnfInfecciosa,
+                    request.AntecedentesFamiliares.ParentescocatalogoEnfinfecciosa,
+                    request.AntecedentesFamiliares.MalFormacion,
+                    request.AntecedentesFamiliares.ObserMalFormacion,
+                    request.AntecedentesFamiliares.ParentescocatalogoMalformacion,
+                    request.AntecedentesFamiliares.Otro,
+                    request.AntecedentesFamiliares.ObserOtro,
+                    request.AntecedentesFamiliares.ParentescocatalogoOtro,
+                    // Tablas relacionadas
+                    request.Alergias,
+                    request.Cirugias,
+                    request.Medicamentos,
+                    request.Laboratorios,
+                    request.Imagenes,
+                    request.Diagnosticos
+                );
+
+                return Ok(new { Message = "Consulta actualizada exitosamente." });
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones (puedes hacer logging aquí si es necesario)
+                return StatusCode(500, new { Message = "Ocurrió un error al actualizar la consulta.", Details = ex.Message });
+            }
+        }
+
         [HttpGet("Buscar")]
         public async Task<IActionResult> BuscarPacientes(int? cedula, string primerNombre, string primerApellido)
         {
