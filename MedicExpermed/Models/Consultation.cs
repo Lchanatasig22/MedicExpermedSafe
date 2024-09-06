@@ -7,107 +7,60 @@ namespace MedicExpermed.Models
 {
     public class Consultation
     {
+        public int Id { get; set; } // Identificador único de la consulta
+        public DateTime FechaCreacion { get; set; } // Fecha de creación de la consulta
+        public string UsuarioCreacion { get; set; } // Usuario que crea la consulta
+        public string HistorialConsulta { get; set; } // Historial médico del paciente
+        public string SecuencialConsulta { get; set; } // Número secuencial de la consulta
+        public int PacienteId { get; set; } // Id del paciente relacionado
+        public string MotivoConsulta { get; set; } // Motivo de la consulta
+        public string EnfermedadConsulta { get; set; } // Descripción de la enfermedad
+        public string NombrePariente { get; set; } // Nombre del pariente de contacto
+        public string SignosAlarma { get; set; } // Signos de alarma que presenta el paciente
+        public string ReconocimientoFarmacologico { get; set; } // Medicamentos conocidos o reconocidos
+        public int TipoPariente { get; set; } // Tipo de pariente
+        public string TelefonoPariente { get; set; } // Teléfono del pariente
+        public string Temperatura { get; set; } // Temperatura del paciente
+        public string FrecuenciaRespiratoria { get; set; } // Frecuencia respiratoria
+        public string PresionArterialSistolica { get; set; } // Presión arterial sistólica
+        public string PresionArterialDiastolica { get; set; } // Presión arterial diastólica
+        public string Pulso { get; set; } // Pulso del paciente
+        public string Peso { get; set; } // Peso del paciente
+        public string Talla { get; set; } // Talla del paciente
+        public string PlanTratamiento { get; set; } // Plan de tratamiento
+        public string Observacion { get; set; } // Observaciones generales de la consulta
+        public string AntecedentesPersonales { get; set; } // Antecedentes personales del paciente
+        public int DiasIncapacidad { get; set; } // Días de incapacidad
+        public int MedicoId { get; set; } // Id del médico que realiza la consulta
+        public int EspecialidadId { get; set; } // Id de la especialidad médica
+        public int TipoConsultaId { get; set; } // Tipo de consulta
+        public string NotasEvolucion { get; set; } // Notas de evolución del paciente
+        public string ConsultaPrincipal { get; set; } // Consulta principal de la visita
+        public int EstadoConsulta { get; set; } // Estado de la consulta
+
+        // Relaciones con otras tablas
+        public ICollection<ConsultaAlergia> Alergias { get; set; } // Lista de alergias asociadas a la consulta
+        public ICollection<ConsultaCirugia> Cirugias { get; set; } // Lista de cirugías asociadas a la consulta
+        public ICollection<ConsultaMedicamento> Medicamentos { get; set; } // Lista de medicamentos asociados
+        public ICollection<ConsultaLaboratorio> Laboratorios { get; set; } // Lista de laboratorios asociados
+        public ICollection<ConsultaImagen> Imagenes { get; set; } // Lista de imágenes asociadas
+        public ICollection<ConsultaDiagnostico> Diagnosticos { get; set; } // Lista de diagnósticos asociados
+        public OrganosSistema OrganosSistemas { get; set; } // Órganos y sistemas asociados
+        public ExamenFisico ExamenFisico { get; set; } // Examen físico asociado
+        public AntecedentesFamiliare AntecedentesFamiliares { get; set; } // Antecedentes familiares asociados
+
+        // Constructor que inicializa los objetos complejos
         public Consultation()
         {
-
+            Alergias = new List<ConsultaAlergia>();
+            Cirugias = new List<ConsultaCirugia>();
+            Medicamentos = new List<ConsultaMedicamento>();
+            Laboratorios = new List<ConsultaLaboratorio>();
+            Imagenes = new List<ConsultaImagen>();
+            Diagnosticos = new List<ConsultaDiagnostico>();
+            OrganosSistemas = new OrganosSistema();
+            ExamenFisico = new ExamenFisico();
+            AntecedentesFamiliares = new AntecedentesFamiliare();
         }
-        // Propiedades básicas
-       
-            // Parámetros de la tabla consulta
-            public string UsuarioCreacion { get; set; }
-            public string Historial { get; set; }
-            public int PacienteId { get; set; }
-            public string Motivo { get; set; }
-            public string Enfermedad { get; set; }
-            public string NombrePariente { get; set; }
-            public string SignosAlarma { get; set; }
-            public string ReconoFarmacologicas { get; set; }
-            public int TipoPariente { get; set; }
-            public string TelefonoPariente { get; set; }
-            public string Temperatura { get; set; }
-            public string FrecuenciaRespiratoria { get; set; }
-            public string PresionArterialSistolica { get; set; }
-            public string PresionArterialDiastolica { get; set; }
-            public string Pulso { get; set; }
-            public string Peso { get; set; }
-            public string Talla { get; set; }
-            public string PlanTratamiento { get; set; }
-            public string Observacion { get; set; }
-            public string AntecedentesPersonales { get; set; }
-            public int DiasIncapacidad { get; set; }
-            public int MedicoId { get; set; }
-            public int EspecialidadId { get; set; }
-            public int TipoConsulta { get; set; }
-            public string NotasEvolucion { get; set; }
-            public string ConsultaPrincipal { get; set; }
-            public int EstadoConsulta { get; set; }
-
-            // Parámetros para organos_sistemas
-            public bool OrgSentidos { get; set; }
-            public string ObserOrgSentidos { get; set; }
-            public bool Respiratorio { get; set; }
-            public string ObserRespiratorio { get; set; }
-            public bool CardioVascular { get; set; }
-            public string ObserCardioVascular { get; set; }
-            public bool Digestivo { get; set; }
-            public string ObserDigestivo { get; set; }
-            public bool Genital { get; set; }
-            public string ObserGenital { get; set; }
-            public bool Urinario { get; set; }
-            public string ObserUrinario { get; set; }
-            public bool MEsqueletico { get; set; }
-            public string ObserMEsqueletico { get; set; }
-            public bool Endocrino { get; set; }
-            public string ObserEndocrino { get; set; }
-            public bool Linfatico { get; set; }
-            public string ObserLinfatico { get; set; }
-            public bool Nervioso { get; set; }
-            public string ObserNervioso { get; set; }
-
-            // Parámetros para examen_fisico
-            public bool Cabeza { get; set; }
-            public string ObserCabeza { get; set; }
-            public bool Cuello { get; set; }
-            public string ObserCuello { get; set; }
-            public bool Torax { get; set; }
-            public string ObserTorax { get; set; }
-            public bool Abdomen { get; set; }
-            public string ObserAbdomen { get; set; }
-            public bool Pelvis { get; set; }
-            public string ObserPelvis { get; set; }
-            public bool Extremidades { get; set; }
-            public string ObserExtremidades { get; set; }
-
-            // Parámetros para antecedentes_familiares
-            public bool Cardiopatia { get; set; }
-            public string ObserCardiopatia { get; set; }
-            public bool Diabetes { get; set; }
-            public string ObserDiabetes { get; set; }
-            public bool EnfCardiovascular { get; set; }
-            public string ObserEnfCardiovascular { get; set; }
-            public bool Hipertension { get; set; }
-            public string ObserHipertension { get; set; }
-            public bool Cancer { get; set; }
-            public string ObserCancer { get; set; }
-            public bool Tuberculosis { get; set; }
-            public string ObserTuberculosis { get; set; }
-            public bool EnfMental { get; set; }
-            public string ObserEnfMental { get; set; }
-            public bool EnfInfecciosa { get; set; }
-            public string ObserEnfInfecciosa { get; set; }
-            public bool MalFormacion { get; set; }
-            public string ObserMalFormacion { get; set; }
-            public bool Otro { get; set; }
-            public string ObserOtro { get; set; }
-
-            // Parámetros tipo tabla (pueden ser listas de objetos)
-            public DataTable Alergias { get; set; }
-            public DataTable Cirugias { get; set; }
-            public DataTable Medicamentos { get; set; }
-            public DataTable Laboratorio { get; set; }
-            public DataTable Imagenes { get; set; }
-            public DataTable Diagnosticos { get; set; }
-        }
-
     }
-
+}

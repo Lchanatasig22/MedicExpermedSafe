@@ -82,6 +82,7 @@ namespace MedicExpermed.Controllers
             var model = new Consultation
             {
                 TipoPariente = ningunTipoParienteId,
+                FechaCreacion = DateTime.Now,
             };
 
           
