@@ -582,7 +582,7 @@ document.getElementById('anadirFilaImagen').addEventListener('click', function (
     var tdCantidad = document.createElement('td');
     var inputCantidad = document.createElement('input');
     inputCantidad.type = "number";
-    inputCantidad.className = "form-control cantidad"; // Clase para facilitar la búsqueda
+    inputCantidad.className = "form-control cantidad-imagen"; // Clase para facilitar la búsqueda
     inputCantidad.placeholder = "Cantidad";
     inputCantidad.min = "1";
     tr.appendChild(tdCantidad);
@@ -592,7 +592,7 @@ document.getElementById('anadirFilaImagen').addEventListener('click', function (
     var tdObservacion = document.createElement('td');
     var inputObservacion = document.createElement('input');
     inputObservacion.type = "text";
-    inputObservacion.className = "form-control observacion"; // Clase para facilitar la búsqueda
+    inputObservacion.className = "form-control observacion-imagen"; // Clase para facilitar la búsqueda
     inputObservacion.placeholder = "Observación";
     tr.appendChild(tdObservacion);
     tdObservacion.appendChild(inputObservacion);
@@ -709,6 +709,7 @@ document.getElementById('anadirFilaLaboratorio').addEventListener('click', funct
 
 
 document.getElementById('consultationForm').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Evitar el comportamiento por defecto del formulario
 
     // Parámetros de consulta
     const consultaDto = {
@@ -852,12 +853,13 @@ document.getElementById('consultationForm').addEventListener('submit', async fun
             EstadoLaboratorio: 1 // Estado predeterminado
         })),
 
+        // Imagenes - asegúrate de capturar correctamente la cantidad y observaciones
         Imagenes: Array.from(document.querySelectorAll('#imagenesTableBody tr')).map(tr => ({
             ImagenId: parseInt(tr.querySelector('.imagen-id')?.value || 0),
-            Cantidad: parseInt(tr.querySelector('.cantidad')?.value || 0),
-            Observacion: tr.querySelector('.observacion')?.value || '',
+            ObservacionImagen: tr.querySelector('.observacion-imagen')?.value || '',  // Asegúrate de que la clase coincide con la observación
+            CantidadImagen: parseInt(tr.querySelector('.cantidad-imagen')?.value || 0),  // Asegúrate de que la clase coincide con la cantidad
             SecuencialImagen: null,
-            EstadoImagen: parseInt(tr.querySelector('.estado-imagen')?.value || 1) // Agregando el estado de la imagen
+            EstadoImagen: parseInt(tr.querySelector('.estado-imagen')?.value || 1) // Estado de la imagen
         })),
 
 
@@ -875,6 +877,7 @@ document.getElementById('consultationForm').addEventListener('submit', async fun
 
     // Muestra el JSON generado en la consola para debug
     console.log("JSON generado para consulta:", JSON.stringify(consultaDto));
+    console.log("Parámetros de antecedentes familiares:", consultaDto.AntecedentesFamiliares);
 
     try {
         // Enviar la solicitud al servidor
@@ -890,6 +893,8 @@ document.getElementById('consultationForm').addEventListener('submit', async fun
 
         if (response.ok) {
             console.log('Consulta creada exitosamente:', result);
+            window.location.href = redirectur; // Cambia esta URL si es diferente
+
         } else {
             console.error('Error al crear la consulta:', result);
         }

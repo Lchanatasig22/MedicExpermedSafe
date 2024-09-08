@@ -81,6 +81,7 @@ namespace MedicExpermed.Models
     {
         public int? ImagenId { get; set; }
         public string? ObservacionImagen { get; set; }
+
         public int? CantidadImagen { get; set; }
         public int? SecuencialImagen { get; set; }
 
