@@ -5,6 +5,11 @@ namespace MedicExpermed.Models
 {
     public partial class Citum
     {
+        public Citum()
+        {
+            Facturacions = new HashSet<Facturacion>();
+        }
+
         public int IdCita { get; set; }
         public DateTime? FechacreacionCita { get; set; }
         public string? UsuariocreacionCita { get; set; }
@@ -19,5 +24,6 @@ namespace MedicExpermed.Models
         public virtual Consultum? Consulta { get; set; }
         public virtual Paciente? Paciente { get; set; }
         public virtual Usuario? Usuario { get; set; }
+        public virtual ICollection<Facturacion> Facturacions { get; set; }
     }
 }

@@ -36,6 +36,9 @@
         <input type="hidden" asp-for="MedicoId" id="medicoId" value="@ViewBag.UsuarioId" />
         <input type="hidden" asp-for="EspecialidadId" id="especialidadId" value="@ViewBag.UsuarioIdEspecialidad" />
         <input type="hidden" asp-for="FechaCreacion" id="FechacreacionConsulta" value="" />
+        <input type="hidden" asp-for="ConsultaPrincipal" id="consultaprincipal_consulta" value="sn" />
+        <input type="hidden" asp-for="SecuencialConsulta" id="secuencial" value="sn" />
+        <input type="hidden" asp-for="EstadoConsulta" id="estado" value="1" />
         <!--Primer Formulario-->
         <div class="setup-content" id="step-1">
             <div class="hr-text">
@@ -446,6 +449,8 @@
 
                 <div class="col-sm-12">
                     <div class="row mb-3">
+                        
+
                         <div class="col-sm-3">
                             <span><i class="fas fa-allergies"></i> Alergias</span>
                             <select class="form-select select2-tags" asp-for="Alergias" id="tipoAlergiaSelect" multiple="multiple">
@@ -464,6 +469,7 @@
                         <!-- Contenedor para los inputs ocultos de alergias -->
                         <div id="hiddenAlergiaInputsContainer"></div>
 
+
                         <div class="col-sm-3">
                             <span><i class="fas fa-syringe"></i> Cirugías</span>
                             <select class="form-select select2-tags" asp-for="Cirugias" id="tipoCirugiaSelect" multiple="multiple">
@@ -481,6 +487,7 @@
                         <div id="cirugiasTagsContainer" class="tags-container"></div>
                         <!-- Contenedor para los inputs ocultos de cirugías -->
                         <div id="hiddenCirugiaInputsContainer"></div>
+
 
 
                     </div>
@@ -503,7 +510,11 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" name="Cardiopatia" type="checkbox" id="consulta-antecedente-checked-cardiopatia" @(Model.AntecedentesFamiliares.Cardiopatia ?? false ? "checked" : "") />
+                                    <input class="form-check-input consulta-antecedente-checked"
+                                           name="Cardiopatia"
+                                           type="checkbox"
+                                           id="consulta-antecedente-checked-cardiopatia"
+                                    @(Model?.AntecedentesFamiliares?.Cardiopatia == true ? "checked" : "") />
                                     <label class="form-check-label" for="consulta-antecedente-checked-cardiopatia">Cardiopatía</label>
                                 </div>
                             </div>
@@ -531,7 +542,11 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" value="1" type="checkbox" id="consulta-antecedente-checked-diabetes" @(Model.AntecedentesFamiliares.Diabetes ?? false ? "checked" : "")>
+                                    <input class="form-check-input consulta-antecedente-checked"
+                                           value="1"
+                                           type="checkbox"
+                                           id="consulta-antecedente-checked-diabetes"
+                                    @(Model?.AntecedentesFamiliares?.Diabetes == true ? "checked" : "")>
                                     <label class="form-check-label" for="consulta-antecedente-checked-diabetes">Diabetes</label>
                                 </div>
                             </div>
@@ -559,7 +574,11 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" name="EnfCardiovascular" @(Model.AntecedentesFamiliares.EnfCardiovascular == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked-enfcardiovascular">
+                                    <input class="form-check-input consulta-antecedente-checked"
+                                           name="EnfCardiovascular"
+                                    @(Model?.AntecedentesFamiliares?.EnfCardiovascular == true ? "checked" : "")
+                                           type="checkbox"
+                                           id="consulta-antecedente-checked-enfcardiovascular">
                                     <label class="form-check-label" for="consulta-antecedente-checked-enfcardiovascular">Enfermedad Cardiovascular</label>
                                 </div>
                             </div>
@@ -587,7 +606,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" name="Hipertension" @(Model.AntecedentesFamiliares.Hipertension == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked-hipertension">
+                                    <input class="form-check-input consulta-antecedente-checked" name="Hipertension" @(Model?.AntecedentesFamiliares.Hipertension == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked-hipertension">
                                     <label class="form-check-label" for="consulta-antecedente-checked-hipertension">Hipertensión</label>
                                 </div>
                             </div>
@@ -615,7 +634,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" name="Cancer" type="checkbox" @(Model.AntecedentesFamiliares.Cancer == true ? "checked" : "") id="consulta-antecedente-checked-cancer">
+                                    <input class="form-check-input consulta-antecedente-checked" name="Cancer" type="checkbox" @(Model?.AntecedentesFamiliares.Cancer == true ? "checked" : "") id="consulta-antecedente-checked-cancer">
                                     <label class="form-check-label" for="consulta-antecedente-checked-cancer">Cáncer</label>
                                 </div>
                             </div>
@@ -643,7 +662,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" name="Tuberculosis" type="checkbox" @(Model.AntecedentesFamiliares.Tuberculosis == true ? "checked" : "") id="consulta-antecedente-checked-tuberculosis">
+                                    <input class="form-check-input consulta-antecedente-checked" name="Tuberculosis" type="checkbox" @(Model?.AntecedentesFamiliares.Tuberculosis == true ? "checked" : "") id="consulta-antecedente-checked-tuberculosis">
                                     <label class="form-check-label" for="consulta-antecedente-checked-tuberculosis">Tuberculosis</label>
                                 </div>
                             </div>
@@ -671,7 +690,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" name="EnfMental" @(Model.AntecedentesFamiliares.EnfMental == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked-enfmental">
+                                    <input class="form-check-input consulta-antecedente-checked" name="EnfMental" @(Model?.AntecedentesFamiliares.EnfMental == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked-enfmental">
                                     <label class="form-check-label" for="consulta-antecedente-checked-enfmental">Enfermedad Mental</label>
                                 </div>
                             </div>
@@ -699,7 +718,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" name="EnfInfecciosa" @(Model.AntecedentesFamiliares.EnfInfecciosa == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked-enfinfecciosa">
+                                    <input class="form-check-input consulta-antecedente-checked" name="EnfInfecciosa" @(Model?.AntecedentesFamiliares.EnfInfecciosa == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked-enfinfecciosa">
                                     <label class="form-check-label" for="consulta-antecedente-checked-enfinfecciosa">Enfermedad Infecciosa</label>
                                 </div>
                             </div>
@@ -727,7 +746,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" name="MalFormacion" @(Model.AntecedentesFamiliares.MalFormacion == true ? "checked" : "") id="consulta-antecedente-checked-malformacion">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" name="MalFormacion" @(Model?.AntecedentesFamiliares.MalFormacion == true ? "checked" : "") id="consulta-antecedente-checked-malformacion">
                                     <label class="form-check-label" for="consulta-antecedente-checked-malformacion">Mal Formación</label>
                                 </div>
                             </div>
@@ -755,7 +774,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox"  @(Model.AntecedentesFamiliares.Otro == true ? "checked" : "") id="consulta-antecedente-checked-otro">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox"  @(Model?.AntecedentesFamiliares.Otro == true ? "checked" : "") id="consulta-antecedente-checked-otro">
                                     <label class="form-check-label" for="consulta-antecedente-checked-otro">Otro</label>
                                 </div>
                             </div>
@@ -985,7 +1004,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.OrganosSistemas.OrgSentidos == true ? "checked" : "") id="consulta-antecedente-checked-orgsentidos">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.OrganosSistemas?.OrgSentidos == true ? "checked" : "") id="consulta-antecedente-checked-orgsentidos">
                                     <label class="form-check-label" for="consulta-antecedente-checked-orgsentidos">Órganos de los sentidos</label>
                                 </div>
                             </div>
@@ -997,7 +1016,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" @(Model.OrganosSistemas.Respiratorio == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked-respiratorio">
+                                    <input class="form-check-input consulta-antecedente-checked" @(Model?.OrganosSistemas.Respiratorio == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked-respiratorio">
                                     <label class="form-check-label" for="consulta-antecedente-checked-respiratorio">Respiratorio</label>
                                 </div>
                             </div>
@@ -1009,7 +1028,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.OrganosSistemas.CardioVascular == true ? "checked" : "") id="consulta-antecedente-checked-cardiovascular">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.OrganosSistemas.CardioVascular == true ? "checked" : "") id="consulta-antecedente-checked-cardiovascular">
                                     <label class="form-check-label" for="consulta-antecedente-checked-cardiovascular">Cardio Vascular</label>
                                 </div>
                             </div>
@@ -1021,7 +1040,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.OrganosSistemas.Digestivo == true ? "checked" : "") id="consulta-antecedente-checked-digestivo">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.OrganosSistemas.Digestivo == true ? "checked" : "") id="consulta-antecedente-checked-digestivo">
                                     <label class="form-check-label" for="consulta-antecedente-checked-digestivo">Digestivo</label>
                                 </div>
                             </div>
@@ -1033,7 +1052,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.OrganosSistemas.Genital == true ? "checked" : "") id="consulta-antecedente-checked-genital">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.OrganosSistemas.Genital == true ? "checked" : "") id="consulta-antecedente-checked-genital">
                                     <label class="form-check-label" for="consulta-antecedente-checked-genital">Genital</label>
                                 </div>
                             </div>
@@ -1045,7 +1064,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.OrganosSistemas.Urinario == true ? "checked" : "") id="consulta-antecedente-checked-urinario">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.OrganosSistemas.Urinario == true ? "checked" : "") id="consulta-antecedente-checked-urinario">
                                     <label class="form-check-label" for="consulta-antecedente-checked-urinario">Urinario</label>
                                 </div>
                             </div>
@@ -1057,7 +1076,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.OrganosSistemas.MEsqueletico == true ? "checked" : "") id="consulta-antecedente-checked-mesqueletico">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.OrganosSistemas.MEsqueletico == true ? "checked" : "") id="consulta-antecedente-checked-mesqueletico">
                                     <label class="form-check-label" for="consulta-antecedente-checked-mesqueletico">Músculo Esquelético</label>
                                 </div>
                             </div>
@@ -1069,7 +1088,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.OrganosSistemas.Endocrino == true ? "checked" : "") id="consulta-antecedente-checked-endocrino">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.OrganosSistemas.Endocrino == true ? "checked" : "") id="consulta-antecedente-checked-endocrino">
                                     <label class="form-check-label" for="consulta-antecedente-checked-endocrino">Endocrino</label>
                                 </div>
                             </div>
@@ -1081,7 +1100,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.OrganosSistemas.Linfatico == true ? "checked" : "") id="consulta-antecedente-checked-linfatico">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.OrganosSistemas.Linfatico == true ? "checked" : "") id="consulta-antecedente-checked-linfatico">
                                     <label class="form-check-label" for="consulta-antecedente-checked-linfatico">Hemo Linfático</label>
                                 </div>
                             </div>
@@ -1093,7 +1112,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.OrganosSistemas.Nervioso == true ? "checked" : "") id="consulta-antecedente-checked-nervioso">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.OrganosSistemas.Nervioso == true ? "checked" : "") id="consulta-antecedente-checked-nervioso">
                                     <label class="form-check-label" for="consulta-antecedente-checked-nervioso">Nervioso</label>
                                 </div>
                             </div>
@@ -1183,7 +1202,7 @@
                 <div class="fields">
                     <div class="col-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ExamenFisico.Cabeza == true ? "checked" : "") id="consulta-antecedente-checked-cabeza">
+                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.ExamenFisico.Cabeza == true ? "checked" : "") id="consulta-antecedente-checked-cabeza">
                             <label class="form-check-label" for="consulta-antecedente-checked-cabeza">Cabeza</label>
                         </div>
                     </div>
@@ -1195,7 +1214,7 @@
                 <div class="fields">
                     <div class="col-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ExamenFisico.Cuello == true ? "checked" : "") id="consulta-antecedente-checked-cuello">
+                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.ExamenFisico.Cuello == true ? "checked" : "") id="consulta-antecedente-checked-cuello">
                             <label class="form-check-label" for="consulta-antecedente-checked-cuello">Cuello</label>
                         </div>
                     </div>
@@ -1207,7 +1226,7 @@
                 <div class="fields">
                     <div class="col-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ExamenFisico.Torax == true ? "checked" : "") id="consulta-antecedente-checked-torax">
+                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.ExamenFisico.Torax == true ? "checked" : "") id="consulta-antecedente-checked-torax">
                             <label class="form-check-label" for="consulta-antecedente-checked-torax">Tórax</label>
                         </div>
                     </div>
@@ -1219,7 +1238,7 @@
                 <div class="fields">
                     <div class="col-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ExamenFisico.Abdomen == true ? "checked" : "") id="consulta-antecedente-checked-abdomen">
+                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.ExamenFisico.Abdomen == true ? "checked" : "") id="consulta-antecedente-checked-abdomen">
                             <label class="form-check-label" for="consulta-antecedente-checked-abdomen">Abdomen</label>
                         </div>
                     </div>
@@ -1231,7 +1250,7 @@
                 <div class="fields">
                     <div class="col-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ExamenFisico.Pelvis == true ? "checked" : "") id="consulta-antecedente-checked-pelvis">
+                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.ExamenFisico.Pelvis == true ? "checked" : "") id="consulta-antecedente-checked-pelvis">
                             <label class="form-check-label" for="consulta-antecedente-checked-pelvis">Pelvis</label>
                         </div>
                     </div>
@@ -1243,7 +1262,7 @@
                 <div class="fields">
                     <div class="col-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ExamenFisico.Extremidades == true ? "checked" : "") id="consulta-antecedente-checked-extremidades">
+                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model?.ExamenFisico.Extremidades == true ? "checked" : "") id="consulta-antecedente-checked-extremidades">
                             <label class="form-check-label" for="consulta-antecedente-checked-extremidades">Extremidades</label>
                         </div>
                     </div>

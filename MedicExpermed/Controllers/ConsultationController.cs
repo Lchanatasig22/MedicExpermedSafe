@@ -85,224 +85,160 @@ namespace MedicExpermed.Controllers
                 FechaCreacion = DateTime.Now,
             };
 
-          
+
 
             return View(model);
         }
-        [HttpPost]
-        public async Task<IActionResult> CrearConsulta(
-               string usuariocreacionConsulta,
-               string historialConsulta,
-               int pacienteConsultaP,
-               string motivoConsulta,
-               string enfermedadConsulta,
-               string nombreparienteConsulta,
-               string signosalarmaConsulta,
-               string reconofarmacologicas,
-               int tipoparienteConsulta,
-               string telefonoParienteConsulta,
-               string temperaturaConsulta,
-               string frecuenciarespiratoriaConsulta,
-               string presionarterialsistolicaConsulta,
-               string presionarterialdiastolicaConsulta,
-               string pulsoConsulta,
-               string pesoConsulta,
-               string tallaConsulta,
-               string plantratamientoConsulta,
-               string observacionConsulta,
-               string antecedentespersonalesConsulta,
-               int diasincapacidadConsulta,
-               int medicoConsultaD,
-               int especialidadId,
-               int tipoConsultaC,
-               string notasevolucionConsulta,
-               string consultaprincipalConsulta,
-               int estadoConsultaC,
-               // Parámetros de órganos y sistemas
-               bool orgSentidos,
-               string obserOrgSentidos,
-               bool respiratorio,
-               string obserRespiratorio,
-               bool cardioVascular,
-               string obserCardioVascular,
-               bool digestivo,
-               string obserDigestivo,
-               bool genital,
-               string obserGenital,
-               bool urinario,
-               string obserUrinario,
-               bool mEsqueletico,
-               string obserMEsqueletico,
-               bool endocrino,
-               string obserEndocrino,
-               bool linfatico,
-               string obserLinfatico,
-               bool nervioso,
-               string obserNervioso,
-               // Parámetros de examen físico
-               bool cabeza,
-               string obserCabeza,
-               bool cuello,
-               string obserCuello,
-               bool torax,
-               string obserTorax,
-               bool abdomen,
-               string obserAbdomen,
-               bool pelvis,
-               string obserPelvis,
-               bool extremidades,
-               string obserExtremidades,
-               // Parámetros de antecedentes familiares
-               bool cardiopatia,
-               string obserCardiopatia,
-               int parentescocatalogoCardiopatia,
-               bool diabetes,
-               string obserDiabetes,
-               int parentescocatalogoDiabetes,
-               bool enfCardiovascular,
-               string obserEnfCardiovascular,
-               int parentescocatalogoEnfCardiovascular,
-               bool hipertension,
-               string obserHipertension,
-               int parentescocatalogoHipertension,
-               bool cancer,
-               string obserCancer,
-               int parentescocatalogoCancer,
-               bool tuberculosis,
-               string obserTuberculosis,
-               int parentescocatalogoTuberculosis,
-               bool enfMental,
-               string obserEnfMental,
-               int parentescocatalogoEnfMental,
-               bool enfInfecciosa,
-               string obserEnfInfecciosa,
-               int parentescocatalogoEnfInfecciosa,
-               bool malFormacion,
-               string obserMalFormacion,
-               int parentescocatalogoMalFormacion,
-               bool otro,
-               string obserOtro,
-               int parentescocatalogoOtro,
-               // Listas de alergias, cirugías, etc.
-               List<ConsultaAlergia> alergias,
-               List<ConsultaCirugia> cirugias,
-               List<ConsultaMedicamento> medicamentos,
-               List<ConsultaLaboratorio> laboratorios,
-               List<ConsultaImagen> imagenes,
-               List<ConsultaDiagnostico> diagnosticos)
+
+
+        //Metodo creacion consulta
+        [HttpPost("Crear-Consulta")]
+        public async Task<IActionResult> CrearConsulta([FromBody] Consultation consultaDto)
         {
+            if (!ModelState.IsValid)
+            {
+                // Si el modelo no es válido, devolver un JSON con los errores
+                return Json(new
+                {
+                    success = false,
+                    message = "Datos inválidos",
+                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                });
+            }
+
             try
             {
-                // Llamar al servicio para crear la consulta
+                // Llama al servicio para crear la consulta
                 await _consultationService.CrearConsultaAsync(
-                    usuariocreacionConsulta,
-                    historialConsulta,
-                    pacienteConsultaP,
-                    motivoConsulta,
-                    enfermedadConsulta,
-                    nombreparienteConsulta,
-                    signosalarmaConsulta,
-                    reconofarmacologicas,
-                    tipoparienteConsulta,
-                    telefonoParienteConsulta,
-                    temperaturaConsulta,
-                    frecuenciarespiratoriaConsulta,
-                    presionarterialsistolicaConsulta,
-                    presionarterialdiastolicaConsulta,
-                    pulsoConsulta,
-                    pesoConsulta,
-                    tallaConsulta,
-                    plantratamientoConsulta,
-                    observacionConsulta,
-                    antecedentespersonalesConsulta,
-                    diasincapacidadConsulta,
-                    medicoConsultaD,
-                    especialidadId,
-                    tipoConsultaC,
-                    notasevolucionConsulta,
-                    consultaprincipalConsulta,
-                    estadoConsultaC,
-                    orgSentidos,
-                    obserOrgSentidos,
-                    respiratorio,
-                    obserRespiratorio,
-                    cardioVascular,
-                    obserCardioVascular,
-                    digestivo,
-                    obserDigestivo,
-                    genital,
-                    obserGenital,
-                    urinario,
-                    obserUrinario,
-                    mEsqueletico,
-                    obserMEsqueletico,
-                    endocrino,
-                    obserEndocrino,
-                    linfatico,
-                    obserLinfatico,
-                    nervioso,
-                    obserNervioso,
-                    cabeza,
-                    obserCabeza,
-                    cuello,
-                    obserCuello,
-                    torax,
-                    obserTorax,
-                    abdomen,
-                    obserAbdomen,
-                    pelvis,
-                    obserPelvis,
-                    extremidades,
-                    obserExtremidades,
-                    cardiopatia,
-                    obserCardiopatia,
-                    parentescocatalogoCardiopatia,
-                    diabetes,
-                    obserDiabetes,
-                    parentescocatalogoDiabetes,
-                    enfCardiovascular,
-                    obserEnfCardiovascular,
-                    parentescocatalogoEnfCardiovascular,
-                    hipertension,
-                    obserHipertension,
-                    parentescocatalogoHipertension,
-                    cancer,
-                    obserCancer,
-                    parentescocatalogoCancer,
-                    tuberculosis,
-                    obserTuberculosis,
-                    parentescocatalogoTuberculosis,
-                    enfMental,
-                    obserEnfMental,
-                    parentescocatalogoEnfMental,
-                    enfInfecciosa,
-                    obserEnfInfecciosa,
-                    parentescocatalogoEnfInfecciosa,
-                    malFormacion,
-                    obserMalFormacion,
-                    parentescocatalogoMalFormacion,
-                    otro,
-                    obserOtro,
-                    parentescocatalogoOtro,
-                    alergias,
-                    cirugias,
-                    medicamentos,
-                    laboratorios,
-                    imagenes,
-                    diagnosticos
+                    consultaDto.UsuarioCreacion,
+                    consultaDto.HistorialConsulta,
+                    consultaDto.PacienteId,
+                    consultaDto.MotivoConsulta,
+                    consultaDto.EnfermedadConsulta,
+                    consultaDto.NombrePariente,
+                    consultaDto.SignosAlarma,
+                    consultaDto.ReconocimientoFarmacologico,
+                    consultaDto.TipoPariente,
+                    consultaDto.TelefonoPariente,
+                    consultaDto.Temperatura,
+                    consultaDto.FrecuenciaRespiratoria,
+                    consultaDto.PresionArterialSistolica,
+                    consultaDto.PresionArterialDiastolica,
+                    consultaDto.Pulso,
+                    consultaDto.Peso,
+                    consultaDto.Talla,
+                    consultaDto.PlanTratamiento,
+                    consultaDto.Observacion,
+                    consultaDto.AntecedentesPersonales,
+                    consultaDto.DiasIncapacidad,
+                    consultaDto.MedicoId,
+                    consultaDto.EspecialidadId,
+                    consultaDto.TipoConsultaId,
+                    consultaDto.NotasEvolucion,
+                    consultaDto.ConsultaPrincipal,
+                    consultaDto.EstadoConsulta,
+                    // Parámetros de órganos y sistemas
+                    consultaDto.OrganosSistemas.OrgSentidos,
+                    consultaDto.OrganosSistemas.ObserOrgSentidos,
+                    consultaDto.OrganosSistemas.Respiratorio,
+                    consultaDto.OrganosSistemas.ObserRespiratorio,
+                    consultaDto.OrganosSistemas.CardioVascular,
+                    consultaDto.OrganosSistemas.ObserCardioVascular,
+                    consultaDto.OrganosSistemas.Digestivo,
+                    consultaDto.OrganosSistemas.ObserDigestivo,
+                    consultaDto.OrganosSistemas.Genital,
+                    consultaDto.OrganosSistemas.ObserGenital,
+                    consultaDto.OrganosSistemas.Urinario,
+                    consultaDto.OrganosSistemas.ObserUrinario,
+                    consultaDto.OrganosSistemas.MEsqueletico,
+                    consultaDto.OrganosSistemas.ObserMEsqueletico,
+                    consultaDto.OrganosSistemas.Endocrino,
+                    consultaDto.OrganosSistemas.ObserEndocrino,
+                    consultaDto.OrganosSistemas.Linfatico,
+                    consultaDto.OrganosSistemas.ObserLinfatico,
+                    consultaDto.OrganosSistemas.Nervioso,
+                    consultaDto.OrganosSistemas.ObserNervioso,
+                    // Parámetros de examen físico
+                    consultaDto.ExamenFisico.Cabeza,
+                    consultaDto.ExamenFisico.ObserCabeza,
+                    consultaDto.ExamenFisico.Cuello,
+                    consultaDto.ExamenFisico.ObserCuello,
+                    consultaDto.ExamenFisico.Torax,
+                    consultaDto.ExamenFisico.ObserTorax,
+                    consultaDto.ExamenFisico.Abdomen,
+                    consultaDto.ExamenFisico.ObserAbdomen,
+                    consultaDto.ExamenFisico.Pelvis,
+                    consultaDto.ExamenFisico.ObserPelvis,
+                    consultaDto.ExamenFisico.Extremidades,
+                    consultaDto.ExamenFisico.ObserExtremidades,
+                    // Parámetros de antecedentes familiares
+                    consultaDto.AntecedentesFamiliares.Cardiopatia,
+                    consultaDto.AntecedentesFamiliares.ObserCardiopatia,
+                    consultaDto.AntecedentesFamiliares.ParentescocatalogoCardiopatia,
+                    consultaDto.AntecedentesFamiliares.Diabetes,
+                    consultaDto.AntecedentesFamiliares.ObserDiabetes,
+                    consultaDto.AntecedentesFamiliares.ParentescocatalogoDiabetes,
+                    consultaDto.AntecedentesFamiliares.EnfCardiovascular,
+                    consultaDto.AntecedentesFamiliares.ObserEnfCardiovascular,
+                    consultaDto.AntecedentesFamiliares.ParentescocatalogoEnfcardiovascular,
+                    consultaDto.AntecedentesFamiliares.Hipertension,
+                    consultaDto.AntecedentesFamiliares.ObserHipertension,
+                    consultaDto.AntecedentesFamiliares.ParentescocatalogoHipertension,
+                    consultaDto.AntecedentesFamiliares.Cancer,
+                    consultaDto.AntecedentesFamiliares.ObserCancer,
+                    consultaDto.AntecedentesFamiliares.ParentescocatalogoCancer,
+                    consultaDto.AntecedentesFamiliares.Tuberculosis,
+                    consultaDto.AntecedentesFamiliares.ObserTuberculosis,
+                    consultaDto.AntecedentesFamiliares.ParentescocatalogoTuberculosis,
+                    consultaDto.AntecedentesFamiliares.EnfMental,
+                    consultaDto.AntecedentesFamiliares.ObserEnfMental,
+                    consultaDto.AntecedentesFamiliares.ParentescocatalogoEnfmental,
+                    consultaDto.AntecedentesFamiliares.EnfInfecciosa,
+                    consultaDto.AntecedentesFamiliares.ObserEnfInfecciosa,
+                    consultaDto.AntecedentesFamiliares.ParentescocatalogoEnfinfecciosa,
+                    consultaDto.AntecedentesFamiliares.MalFormacion,
+                    consultaDto.AntecedentesFamiliares.ObserMalFormacion,
+                    consultaDto.AntecedentesFamiliares.ParentescocatalogoMalformacion,
+                    consultaDto.AntecedentesFamiliares.Otro,
+                    consultaDto.AntecedentesFamiliares.ObserOtro,
+                    consultaDto.AntecedentesFamiliares.ParentescocatalogoOtro,
+                    // Tablas relacionadas
+                    consultaDto.Alergias,
+                    consultaDto.Cirugias,
+                    consultaDto.Medicamentos,
+                    consultaDto.Laboratorios,
+                    consultaDto.Imagenes,
+                    consultaDto.Diagnosticos
                 );
 
-                // Redirigir o devolver un resultado exitoso
-                return RedirectToAction("ConsultaCreada"); // Ajusta según la lógica que necesites
+                // Verificar si es una solicitud AJAX
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    // Devuelve JSON en caso de éxito
+                    return Json(new { success = true, message = "Consulta creada exitosamente" });
+                }
+                else
+                {
+                    // Redirigir en caso de una solicitud normal (no AJAX)
+                    return RedirectToAction("ListarConsultas");
+                }
             }
             catch (Exception ex)
             {
-                // Manejo de errores
-                ModelState.AddModelError(string.Empty, $"Error al crear la consulta: {ex.Message}");
-                return View(); // Devuelve la vista con los errores, si es necesario
+                // Capturar el error y devolver la respuesta adecuada
+                _logger.LogError(ex, "Error al crear la consulta");
+
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = false, message = "Ocurrió un error en el servidor.", details = ex.Message });
+                }
+                else
+                {
+                    // Para solicitudes normales, muestra la vista de error
+                    return View("Error", new ErrorViewModel { RequestId = ex.Message });
+                }
             }
         }
-
 
 
 
@@ -372,71 +308,74 @@ namespace MedicExpermed.Controllers
                     request.NotasEvolucion,
                     request.ConsultaPrincipal,
                     request.EstadoConsulta,
-                    // Parámetros para órganos y sistemas
-                    request.OrganosSistemas.OrgSentidos,
-                    request.OrganosSistemas.ObserOrgSentidos,
-                    request.OrganosSistemas.Respiratorio,
-                    request.OrganosSistemas.ObserRespiratorio,
-                    request.OrganosSistemas.CardioVascular,
-                    request.OrganosSistemas.ObserCardioVascular,
-                    request.OrganosSistemas.Digestivo,
-                    request.OrganosSistemas.ObserDigestivo,
-                    request.OrganosSistemas.Genital,
-                    request.OrganosSistemas.ObserGenital,
-                    request.OrganosSistemas.Urinario,
-                    request.OrganosSistemas.ObserUrinario,
-                    request.OrganosSistemas.MEsqueletico,
-                    request.OrganosSistemas.ObserMEsqueletico,
-                    request.OrganosSistemas.Endocrino,
-                    request.OrganosSistemas.ObserEndocrino,
-                    request.OrganosSistemas.Linfatico,
-                    request.OrganosSistemas.ObserLinfatico,
-                    request.OrganosSistemas.Nervioso,
-                    request.OrganosSistemas.ObserNervioso,
-                    // Parámetros para examen físico
-                    request.ExamenFisico.Cabeza,
-                    request.ExamenFisico.ObserCabeza,
-                    request.ExamenFisico.Cuello,
-                    request.ExamenFisico.ObserCuello,
-                    request.ExamenFisico.Torax,
-                    request.ExamenFisico.ObserTorax,
-                    request.ExamenFisico.Abdomen,
-                    request.ExamenFisico.ObserAbdomen,
-                    request.ExamenFisico.Pelvis,
-                    request.ExamenFisico.ObserPelvis,
-                    request.ExamenFisico.Extremidades,
-                    request.ExamenFisico.ObserExtremidades,
-                    // Parámetros para antecedentes familiares
-                    request.AntecedentesFamiliares.Cardiopatia,
-                    request.AntecedentesFamiliares.ObserCardiopatia,
-                    request.AntecedentesFamiliares.ParentescocatalogoCardiopatia,
-                    request.AntecedentesFamiliares.Diabetes,
-                    request.AntecedentesFamiliares.ObserDiabetes,
-                    request.AntecedentesFamiliares.ParentescocatalogoDiabetes,
-                    request.AntecedentesFamiliares.EnfCardiovascular,
-                    request.AntecedentesFamiliares.ObserEnfCardiovascular,
-                    request.AntecedentesFamiliares.ParentescocatalogoEnfcardiovascular,
-                    request.AntecedentesFamiliares.Hipertension,
-                    request.AntecedentesFamiliares.ObserHipertension,
-                    request.AntecedentesFamiliares.ParentescocatalogoHipertension,
-                    request.AntecedentesFamiliares.Cancer,
-                    request.AntecedentesFamiliares.ObserCancer,
-                    request.AntecedentesFamiliares.ParentescocatalogoCancer,
-                    request.AntecedentesFamiliares.Tuberculosis,
-                    request.AntecedentesFamiliares.ObserTuberculosis,
-                    request.AntecedentesFamiliares.ParentescocatalogoTuberculosis,
-                    request.AntecedentesFamiliares.EnfMental,
-                    request.AntecedentesFamiliares.ObserEnfMental,
-                    request.AntecedentesFamiliares.ParentescocatalogoEnfmental,
-                    request.AntecedentesFamiliares.EnfInfecciosa,
-                    request.AntecedentesFamiliares.ObserEnfInfecciosa,
-                    request.AntecedentesFamiliares.ParentescocatalogoEnfinfecciosa,
-                    request.AntecedentesFamiliares.MalFormacion,
-                    request.AntecedentesFamiliares.ObserMalFormacion,
-                    request.AntecedentesFamiliares.ParentescocatalogoMalformacion,
-                    request.AntecedentesFamiliares.Otro,
-                    request.AntecedentesFamiliares.ObserOtro,
-                    request.AntecedentesFamiliares.ParentescocatalogoOtro,
+// Parámetros para órganos y sistemas con manejo de booleanos nullable
+request.OrganosSistemas.OrgSentidos ?? false,        // Manejo de bool?
+request.OrganosSistemas.ObserOrgSentidos,
+request.OrganosSistemas.Respiratorio ?? false,       // Manejo de bool?
+request.OrganosSistemas.ObserRespiratorio,
+request.OrganosSistemas.CardioVascular ?? false,     // Manejo de bool?
+request.OrganosSistemas.ObserCardioVascular,
+request.OrganosSistemas.Digestivo ?? false,          // Manejo de bool?
+request.OrganosSistemas.ObserDigestivo,
+request.OrganosSistemas.Genital ?? false,            // Manejo de bool?
+request.OrganosSistemas.ObserGenital,
+request.OrganosSistemas.Urinario ?? false,           // Manejo de bool?
+request.OrganosSistemas.ObserUrinario,
+request.OrganosSistemas.MEsqueletico ?? false,       // Manejo de bool?
+request.OrganosSistemas.ObserMEsqueletico,
+request.OrganosSistemas.Endocrino ?? false,          // Manejo de bool?
+request.OrganosSistemas.ObserEndocrino,
+request.OrganosSistemas.Linfatico ?? false,          // Manejo de bool?
+request.OrganosSistemas.ObserLinfatico,
+request.OrganosSistemas.Nervioso ?? false,           // Manejo de bool?
+request.OrganosSistemas.ObserNervioso,
+
+
+// Parámetros para examen físico con manejo de booleanos nullable
+request.ExamenFisico.Cabeza ?? false, // Manejo de bool?
+request.ExamenFisico.ObserCabeza,
+request.ExamenFisico.Cuello ?? false, // Manejo de bool?
+request.ExamenFisico.ObserCuello,
+request.ExamenFisico.Torax ?? false, // Manejo de bool?
+request.ExamenFisico.ObserTorax,
+request.ExamenFisico.Abdomen ?? false, // Manejo de bool?
+request.ExamenFisico.ObserAbdomen,
+request.ExamenFisico.Pelvis ?? false, // Manejo de bool?
+request.ExamenFisico.ObserPelvis,
+request.ExamenFisico.Extremidades ?? false, // Manejo de bool?
+request.ExamenFisico.ObserExtremidades
+,
+// Parámetros para antecedentes familiares, manejo de nulos con valor predeterminado
+request.AntecedentesFamiliares.Cardiopatia ?? false,
+request.AntecedentesFamiliares.ObserCardiopatia,
+request.AntecedentesFamiliares.ParentescocatalogoCardiopatia ?? default(int),
+request.AntecedentesFamiliares.Diabetes ?? false,
+request.AntecedentesFamiliares.ObserDiabetes,
+request.AntecedentesFamiliares.ParentescocatalogoDiabetes ?? default(int),
+request.AntecedentesFamiliares.EnfCardiovascular ?? false,
+request.AntecedentesFamiliares.ObserEnfCardiovascular,
+request.AntecedentesFamiliares.ParentescocatalogoEnfcardiovascular ?? default(int),
+request.AntecedentesFamiliares.Hipertension ?? false,
+request.AntecedentesFamiliares.ObserHipertension,
+request.AntecedentesFamiliares.ParentescocatalogoHipertension ?? default(int),
+request.AntecedentesFamiliares.Cancer ?? false,
+request.AntecedentesFamiliares.ObserCancer,
+request.AntecedentesFamiliares.ParentescocatalogoCancer ?? default(int),
+request.AntecedentesFamiliares.Tuberculosis ?? false,
+request.AntecedentesFamiliares.ObserTuberculosis,
+request.AntecedentesFamiliares.ParentescocatalogoTuberculosis ?? default(int),
+request.AntecedentesFamiliares.EnfMental ?? false,
+request.AntecedentesFamiliares.ObserEnfMental,
+request.AntecedentesFamiliares.ParentescocatalogoEnfmental ?? default(int),
+request.AntecedentesFamiliares.EnfInfecciosa ?? false,
+request.AntecedentesFamiliares.ObserEnfInfecciosa,
+request.AntecedentesFamiliares.ParentescocatalogoEnfinfecciosa ?? default(int),
+request.AntecedentesFamiliares.MalFormacion ?? false,
+request.AntecedentesFamiliares.ObserMalFormacion,
+request.AntecedentesFamiliares.ParentescocatalogoMalformacion ?? default(int),
+request.AntecedentesFamiliares.Otro ?? false,
+request.AntecedentesFamiliares.ObserOtro,
+request.AntecedentesFamiliares.ParentescocatalogoOtro ?? default(int),
                     // Tablas relacionadas
                     request.Alergias,
                     request.Cirugias,

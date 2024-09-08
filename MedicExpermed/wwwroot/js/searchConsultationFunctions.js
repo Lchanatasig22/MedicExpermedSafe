@@ -337,7 +337,7 @@ document.getElementById('dictationIconObservacion').addEventListener('click', fu
     toggleDictation('observacion_consulta', 'dictationIconObservacion');
 });
 
-//Tarjetitas
+//Tarjetitas para Alergias y Cirugías
 
 $('.select2-tags').select2({
     placeholder: "Buscar",
@@ -364,15 +364,31 @@ function updateTags(selectId, containerId) {
 
 $('#tipoAlergiaSelect').on('change', function () {
     updateTags('#tipoAlergiaSelect', '#alergiasTagsContainer');
+    updateHiddenInputs('#tipoAlergiaSelect', '#hiddenAlergiaInputsContainer', 'Alergias');
 });
 
 $('#tipoCirugiaSelect').on('change', function () {
     updateTags('#tipoCirugiaSelect', '#cirugiasTagsContainer');
+    updateHiddenInputs('#tipoCirugiaSelect', '#hiddenCirugiaInputsContainer', 'Cirugias');
 });
 
 // Inicializa las tarjetitas en caso de que haya valores preseleccionados
 updateTags('#tipoAlergiaSelect', '#alergiasTagsContainer');
 updateTags('#tipoCirugiaSelect', '#cirugiasTagsContainer');
+
+function updateHiddenInputs(selectId, containerId, tipo) {
+    const selectedOptions = $(selectId).val(); // Obtener valores seleccionados
+    const container = $(containerId);
+    container.empty(); // Limpiar inputs antes de agregar nuevos
+
+    selectedOptions.forEach(value => {
+        const hiddenInput = $('<input>')
+            .attr('type', 'hidden')
+            .attr('name', tipo + '[]') // Para separar Alergias y Cirugías
+            .val(value);
+        container.append(hiddenInput);
+    });
+}
 
 // Función para mostrar u ocultar la observación según el estado del switch
 $('.consulta-antecedente-checked').on('change', function () {
@@ -433,35 +449,21 @@ document.getElementById('anadirFila').addEventListener('click', function () {
     tdDiagnostico.textContent = diagnosticoTexto;
     tr.appendChild(tdDiagnostico);
 
-    // Columna de Presuntivo/Definitivo con estilo toggle
-    var tdTipo = document.createElement('td');
-    var divGroup = document.createElement('div');
-    divGroup.className = "btn-group btn-group-toggle";
-    divGroup.setAttribute('data-toggle', 'buttons');
-
-    var labelPresuntivo = document.createElement('label');
-    labelPresuntivo.className = "btn btn-outline-primary";
-    var checkboxPresuntivo = document.createElement('input');
-    checkboxPresuntivo.type = "checkbox";
-    checkboxPresuntivo.name = "Diagnosticos[" + diagnosticoId + "].PresuntivoDiagnosticos"; // Nombre para el binding del modelo
-    checkboxPresuntivo.autocomplete = "off";
-    labelPresuntivo.appendChild(checkboxPresuntivo);
-    labelPresuntivo.append(" Presuntivo");
-
-    var labelDefinitivo = document.createElement('label');
-    labelDefinitivo.className = "btn btn-outline-primary";
-    var checkboxDefinitivo = document.createElement('input');
-    checkboxDefinitivo.type = "checkbox";
-    checkboxDefinitivo.name = "Diagnosticos[" + diagnosticoId + "].DefinitivoDiagnosticos"; // Nombre para el binding del modelo
-    checkboxDefinitivo.autocomplete = "off";
-    labelDefinitivo.appendChild(checkboxDefinitivo);
-    labelDefinitivo.append(" Definitivo");
-
-    divGroup.appendChild(labelPresuntivo);
-    divGroup.appendChild(labelDefinitivo);
-
-    tdTipo.appendChild(divGroup);
-    tr.appendChild(tdTipo);
+    // Columna de Presuntivo/Definitivo
+    var tdPresuntivoDefinitivo = document.createElement('td');
+    var inputPresuntivo = document.createElement('input');
+    inputPresuntivo.type = "checkbox";
+    inputPresuntivo.className = "presuntivo-diagnostico";
+    inputPresuntivo.name = "Diagnosticos[" + diagnosticoId + "].PresuntivoDiagnosticos"; // Binding para presuntivo
+    var inputDefinitivo = document.createElement('input');
+    inputDefinitivo.type = "checkbox";
+    inputDefinitivo.className = "definitivo-diagnostico";
+    inputDefinitivo.name = "Diagnosticos[" + diagnosticoId + "].DefinitivoDiagnosticos"; // Binding para definitivo
+    tdPresuntivoDefinitivo.appendChild(inputPresuntivo);
+    tdPresuntivoDefinitivo.appendChild(document.createTextNode(' Presuntivo '));
+    tdPresuntivoDefinitivo.appendChild(inputDefinitivo);
+    tdPresuntivoDefinitivo.appendChild(document.createTextNode(' Definitivo '));
+    tr.appendChild(tdPresuntivoDefinitivo);
 
     // Columna para el botón de eliminar
     var tdEliminar = document.createElement('td');
@@ -474,15 +476,17 @@ document.getElementById('anadirFila').addEventListener('click', function () {
     tdEliminar.appendChild(btnEliminar);
     tr.appendChild(tdEliminar);
 
-    // Añadir la fila a la tabla
-    document.getElementById('diagnosticoTableBody').appendChild(tr);
-
-    // Campos ocultos para enviar el ID del diagnóstico y su observación
+    // Campo oculto para enviar el ID del diagnóstico
     var hiddenInputDiagnosticoId = document.createElement('input');
     hiddenInputDiagnosticoId.type = "hidden";
-    hiddenInputDiagnosticoId.name = "Diagnosticos[" + diagnosticoId + "].DiagnosticoId"; // Nombre para el binding del modelo
-    hiddenInputDiagnosticoId.value = diagnosticoId;
+    hiddenInputDiagnosticoId.className = "diagnostico-id"; // Clase para identificar el ID
+    hiddenInputDiagnosticoId.value = diagnosticoId; // Valor del diagnóstico seleccionado
     tr.appendChild(hiddenInputDiagnosticoId);
+
+
+
+    // Añadir la fila a la tabla
+    document.getElementById('diagnosticoTableBody').appendChild(tr);
 
     // Opcional: limpiar el select después de añadir
     selectDiagnostico.value = "";
@@ -500,7 +504,7 @@ document.getElementById('anadirFilaMedicamento').addEventListener('click', funct
         return;
     }
 
-    // Crear elementos HTML para la nueva fila
+    // Crear la fila de la tabla
     var tr = document.createElement('tr');
 
     // Columna de Medicamento
@@ -508,22 +512,21 @@ document.getElementById('anadirFilaMedicamento').addEventListener('click', funct
     tdMedicamento.textContent = medicamentoTexto;
     tr.appendChild(tdMedicamento);
 
-    // Columna de Cantidad
-    var tdCantidad = document.createElement('td');
-    var inputCantidad = document.createElement('input');
-    inputCantidad.type = "number";
-    inputCantidad.className = "form-control";
-    inputCantidad.name = "Medicamentos[" + medicamentoId + "].Cantidad"; // Nombre para el binding del modelo
-    inputCantidad.min = "1";
-    inputCantidad.placeholder = "Cantidad";
-    tdCantidad.appendChild(inputCantidad);
-    tr.appendChild(tdCantidad);
+    // Columna de Dosis
+    var tdDosis = document.createElement('td');
+    var inputDosis = document.createElement('input');
+    inputDosis.type = "number";
+    inputDosis.className = "form-control dosis-medicamento";
+    inputDosis.name = "Medicamentos[" + medicamentoId + "].DosisMedicamento"; // Nombre para el binding del modelo
+    inputDosis.placeholder = "Cantidad";
+    tdDosis.appendChild(inputDosis);
+    tr.appendChild(tdDosis);
 
     // Columna de Observación
     var tdObservacion = document.createElement('td');
     var inputObservacion = document.createElement('input');
     inputObservacion.type = "text";
-    inputObservacion.className = "form-control";
+    inputObservacion.className = "form-control observacion-medicamento";
     inputObservacion.name = "Medicamentos[" + medicamentoId + "].ObservacionMedicamento"; // Nombre para el binding del modelo
     inputObservacion.placeholder = "Observación";
     tdObservacion.appendChild(inputObservacion);
@@ -535,7 +538,7 @@ document.getElementById('anadirFilaMedicamento').addEventListener('click', funct
     btnEliminar.className = "btn btn-outline-danger";
     btnEliminar.innerHTML = '<i class="fas fa-trash"></i>';
     btnEliminar.addEventListener('click', function () {
-        this.closest('tr').remove();
+        this.closest('tr').remove(); // Elimina la fila actual
     });
     tdEliminar.appendChild(btnEliminar);
     tr.appendChild(tdEliminar);
@@ -546,13 +549,14 @@ document.getElementById('anadirFilaMedicamento').addEventListener('click', funct
     // Campo oculto para enviar el ID del medicamento
     var hiddenInputMedicamentoId = document.createElement('input');
     hiddenInputMedicamentoId.type = "hidden";
-    hiddenInputMedicamentoId.name = "Medicamentos[" + medicamentoId + "].MedicamentoId"; // Nombre para el binding del modelo
+    hiddenInputMedicamentoId.className = "medicamento-id"; // Clase para facilitar la captura
     hiddenInputMedicamentoId.value = medicamentoId;
     tr.appendChild(hiddenInputMedicamentoId);
 
-    // Opcional: limpiar el select después de añadir
+    // Limpiar el select después de añadir
     selectMedicamento.value = "";
 });
+
 
 //Tabla a;adir imagenes
 document.getElementById('anadirFilaImagen').addEventListener('click', function () {
@@ -578,22 +582,30 @@ document.getElementById('anadirFilaImagen').addEventListener('click', function (
     var tdCantidad = document.createElement('td');
     var inputCantidad = document.createElement('input');
     inputCantidad.type = "number";
-    inputCantidad.className = "form-control";
-    inputCantidad.name = "Imagenes[" + imagenId + "].CantidadImagen"; // Nombre para el binding del modelo
-    inputCantidad.min = "1";
+    inputCantidad.className = "form-control cantidad"; // Clase para facilitar la búsqueda
     inputCantidad.placeholder = "Cantidad";
-    tdCantidad.appendChild(inputCantidad);
+    inputCantidad.min = "1";
     tr.appendChild(tdCantidad);
+    tdCantidad.appendChild(inputCantidad);
 
     // Columna de Observación
     var tdObservacion = document.createElement('td');
     var inputObservacion = document.createElement('input');
     inputObservacion.type = "text";
-    inputObservacion.className = "form-control";
-    inputObservacion.name = "Imagenes[" + imagenId + "].ObservacionImagen"; // Nombre para el binding del modelo
+    inputObservacion.className = "form-control observacion"; // Clase para facilitar la búsqueda
     inputObservacion.placeholder = "Observación";
-    tdObservacion.appendChild(inputObservacion);
     tr.appendChild(tdObservacion);
+    tdObservacion.appendChild(inputObservacion);
+
+    // Columna de Secuencial
+    var tdSecuencial = document.createElement('td');
+    var inputSecuencial = document.createElement('input');
+    inputSecuencial.type = "hidden";
+    inputSecuencial.className = "form-control secuencial-imagen"; // Clase para facilitar la búsqueda
+    inputSecuencial.placeholder = "Secuencial";
+    inputSecuencial.min = "1";
+    tr.appendChild(tdSecuencial);
+    tdSecuencial.appendChild(inputSecuencial);
 
     // Columna para el botón de eliminar
     var tdEliminar = document.createElement('td');
@@ -603,15 +615,22 @@ document.getElementById('anadirFilaImagen').addEventListener('click', function (
     btnEliminar.addEventListener('click', function () {
         this.closest('tr').remove();
     });
-    tdEliminar.appendChild(btnEliminar);
     tr.appendChild(tdEliminar);
+    tdEliminar.appendChild(btnEliminar);
 
     // Campo oculto para enviar el ID de la imagen
     var hiddenInputImagenId = document.createElement('input');
     hiddenInputImagenId.type = "hidden";
-    hiddenInputImagenId.name = "Imagenes[" + imagenId + "].ImagenId"; // Nombre para el binding del modelo
+    hiddenInputImagenId.className = "imagen-id"; // Clase para facilitar la búsqueda
     hiddenInputImagenId.value = imagenId;
     tr.appendChild(hiddenInputImagenId);
+
+    // Campo oculto para el estado de la imagen (predeterminado en 1)
+    var hiddenInputEstadoImagen = document.createElement('input');
+    hiddenInputEstadoImagen.type = "hidden";
+    hiddenInputEstadoImagen.className = "estado-imagen"; // Clase para facilitar la búsqueda
+    hiddenInputEstadoImagen.value = 1; // Estado predeterminado a '1'
+    tr.appendChild(hiddenInputEstadoImagen);
 
     // Añadir la fila a la tabla
     document.getElementById('imagenesTableBody').appendChild(tr);
@@ -644,7 +663,7 @@ document.getElementById('anadirFilaLaboratorio').addEventListener('click', funct
     var tdCantidad = document.createElement('td');
     var inputCantidad = document.createElement('input');
     inputCantidad.type = "number";
-    inputCantidad.className = "form-control";
+    inputCantidad.className = "form-control cantidad";
     inputCantidad.name = "Laboratorios[" + laboratorioId + "].CantidadLaboratorio"; // Nombre para el binding del modelo
     inputCantidad.min = "1";
     inputCantidad.placeholder = "Cantidad";
@@ -655,7 +674,7 @@ document.getElementById('anadirFilaLaboratorio').addEventListener('click', funct
     var tdObservacion = document.createElement('td');
     var inputObservacion = document.createElement('input');
     inputObservacion.type = "text";
-    inputObservacion.className = "form-control";
+    inputObservacion.className = "form-control observacion";
     inputObservacion.name = "Laboratorios[" + laboratorioId + "].Observacion"; // Nombre para el binding del modelo
     inputObservacion.placeholder = "Observación";
     tdObservacion.appendChild(inputObservacion);
@@ -675,9 +694,10 @@ document.getElementById('anadirFilaLaboratorio').addEventListener('click', funct
     // Campo oculto para enviar el ID del laboratorio
     var hiddenInputLaboratorioId = document.createElement('input');
     hiddenInputLaboratorioId.type = "hidden";
-    hiddenInputLaboratorioId.name = "Laboratorios[" + laboratorioId + "].CatalogoLaboratorioId"; // Nombre para el binding del modelo
-    hiddenInputLaboratorioId.value = laboratorioId;
+    hiddenInputLaboratorioId.className = "laboratorio-id"; // Clase para identificar el ID
+    hiddenInputLaboratorioId.value = laboratorioId; // Valor del laboratorio seleccionado
     tr.appendChild(hiddenInputLaboratorioId);
+
 
     // Añadir la fila a la tabla
     document.getElementById('laboratorioTableBody').appendChild(tr);
@@ -686,215 +706,190 @@ document.getElementById('anadirFilaLaboratorio').addEventListener('click', funct
     selectLaboratorio.value = "";
 });
 
+
+
 document.getElementById('consultationForm').addEventListener('submit', async function (event) {
-    event.preventDefault(); // Evita que el formulario se envíe de forma tradicional
 
-    // Captura de datos generales
-    const usuarioCreacion = document.getElementById('usuarioNombre')?.value || '';
-    const medicoId = document.getElementById('medicoId')?.value || '';
-    const especialidadId = document.getElementById('especialidadId')?.value || '';
-    const pacienteId = document.getElementById('idPaciente')?.value || '';
-    const historialConsulta = document.getElementById('historiaClinica')?.value || '';
-    const motivoConsulta = document.getElementById('motivoConsulta')?.value || '';
-    const enfermedadConsulta = document.getElementById('enfermedadProblema')?.value || '';
-    const nombrePariente = document.getElementById('acompañante')?.value || '';
-    const tipoPariente = document.getElementById('tipoParienteSelect')?.value || '';
-    const telefonoPariente = document.getElementById('telefonoPariente')?.value || '';
-    const temperatura = document.getElementById('temperatura_consulta')?.value || '';
-    const frecuenciaRespiratoria = document.getElementById('frecuenciarespiratoria_consulta')?.value || '';
-    const presionArterialSistolica = document.getElementById('PresionarterialsistolicaConsulta')?.value || '';
-    const presionArterialDiastolica = document.getElementById('PresionarterialdiastolicaConsulta')?.value || '';
-    const pulso = document.getElementById('pulso_consulta')?.value || '';
-    const peso = document.getElementById('peso_consulta')?.value || '';
-    const talla = document.getElementById('talla_consulta')?.value || '';
-    const planTratamiento = document.getElementById('plantratamiento_consulta')?.value || '';
-    const diasIncapacidad = document.getElementById('diasincapacidad_consulta')?.value || '';
-    const observacionConsulta = document.getElementById('observacion_consulta')?.value || '';
-
-    // Captura de alergias y cirugías
-    const alergias = Array.from(document.querySelectorAll('#hiddenAlergiaInputsContainer input')).map(input => input?.value || '');
-    const cirugias = Array.from(document.querySelectorAll('#hiddenCirugiaInputsContainer input')).map(input => input?.value || '');
-
-    // Captura de diagnósticos
-    const diagnosticos = Array.from(document.querySelectorAll('#diagnosticoTableBody tr')).map(tr => {
-        return {
-            DiagnosticoId: tr.querySelector('.diagnostico-id')?.value || '',
-            PresuntivoDefinitivo: tr.querySelector('.presuntivo-definitivo')?.value || ''
-        };
-    });
-
-    // Captura de medicamentos
-    const medicamentos = Array.from(document.querySelectorAll('#medicamentosTableBody tr')).map(tr => {
-        return {
-            MedicamentoId: tr.querySelector('.medicamento-id')?.value || '',
-            Cantidad: tr.querySelector('.cantidad')?.value || '',
-            Observacion: tr.querySelector('.observacion')?.value || ''
-        };
-    });
-
-    // Captura de laboratorios
-    const laboratorios = Array.from(document.querySelectorAll('#laboratorioTableBody tr')).map(tr => {
-        return {
-            LaboratorioId: tr.querySelector('.laboratorio-id')?.value || '',
-            Cantidad: tr.querySelector('.cantidad')?.value || '',
-            Observacion: tr.querySelector('.observacion')?.value || ''
-        };
-    });
-
-    // Captura de imágenes
-    const imagenes = Array.from(document.querySelectorAll('#imagenesTableBody tr')).map(tr => {
-        return {
-            ImagenId: tr.querySelector('.imagen-id')?.value || '',
-            Cantidad: tr.querySelector('.cantidad')?.value || '',
-            Observacion: tr.querySelector('.observacion')?.value || ''
-        };
-    });
-
-    // Captura de recomendaciones no farmacológicas y signos de alarma
-    const reconofarmacologicas = document.getElementById('reconofarmacologicas')?.value || '';
-    const signosAlarma = document.getElementById('signosAlarma')?.value || '';
-
-    // Captura de órganos y sistemas
-    const organosSistemas = {
-        OrgSentidos: document.getElementById('consulta-antecedente-checked-orgsentidos')?.checked || false,
-        ObserOrgSentidos: document.getElementById('consulta-antecedente-observacion-orgsentidos')?.value || '',
-        Respiratorio: document.getElementById('consulta-antecedente-checked-respiratorio')?.checked || false,
-        ObserRespiratorio: document.getElementById('consulta-antecedente-observacion-respiratorio')?.value || '',
-        CardioVascular: document.getElementById('consulta-antecedente-checked-cardiovascular')?.checked || false,
-        ObserCardioVascular: document.getElementById('consulta-antecedente-observacion-cardiovascular')?.value || '',
-        Digestivo: document.getElementById('consulta-antecedente-checked-digestivo')?.checked || false,
-        ObserDigestivo: document.getElementById('consulta-antecedente-observacion-digestivo')?.value || '',
-        Genital: document.getElementById('consulta-antecedente-checked-genital')?.checked || false,
-        ObserGenital: document.getElementById('consulta-antecedente-observacion-genital')?.value || '',
-        Urinario: document.getElementById('consulta-antecedente-checked-urinario')?.checked || false,
-        ObserUrinario: document.getElementById('consulta-antecedente-observacion-urinario')?.value || '',
-        MEsqueletico: document.getElementById('consulta-antecedente-checked-mesqueletico')?.checked || false,
-        ObserMEsqueletico: document.getElementById('consulta-antecedente-observacion-mesqueletico')?.value || '',
-        Endocrino: document.getElementById('consulta-antecedente-checked-endocrino')?.checked || false,
-        ObserEndocrino: document.getElementById('consulta-antecedente-observacion-endocrino')?.value || '',
-        Linfatico: document.getElementById('consulta-antecedente-checked-linfatico')?.checked || false,
-        ObserLinfatico: document.getElementById('consulta-antecedente-observacion-linfatico')?.value || '',
-        Nervioso: document.getElementById('consulta-antecedente-checked-nervioso')?.checked || false,
-        ObserNervioso: document.getElementById('consulta-antecedente-observacion-nervioso')?.value || ''
-    };
-
-    // Captura de examen físico
-    const examenFisico = {
-        Cabeza: document.getElementById('consulta-antecedente-checked-cabeza')?.checked || false,
-        ObserCabeza: document.getElementById('consulta-antecedente-observacion-cabeza')?.value || '',
-        Cuello: document.getElementById('consulta-antecedente-checked-cuello')?.checked || false,
-        ObserCuello: document.getElementById('consulta-antecedente-observacion-cuello')?.value || '',
-        Torax: document.getElementById('consulta-antecedente-checked-torax')?.checked || false,
-        ObserTorax: document.getElementById('consulta-antecedente-observacion-torax')?.value || '',
-        Abdomen: document.getElementById('consulta-antecedente-checked-abdomen')?.checked || false,
-        ObserAbdomen: document.getElementById('consulta-antecedente-observacion-abdomen')?.value || '',
-        Pelvis: document.getElementById('consulta-antecedente-checked-pelvis')?.checked || false,
-        ObserPelvis: document.getElementById('consulta-antecedente-observacion-pelvis')?.value || '',
-        Extremidades: document.getElementById('consulta-antecedente-checked-extremidades')?.checked || false,
-        ObserExtremidades: document.getElementById('consulta-antecedente-observacion-extremidades')?.value || ''
-    };
-
-    // Captura de antecedentes familiares
-    const antecedentesFamiliares = {
-        Cardiopatia: document.getElementById('consulta-antecedente-checked-cardiopatia')?.checked || false,
-        ObserCardiopatia: document.getElementById('consulta-observacion-cardiopatia')?.value || '',
-        ParentescoCardiopatia: document.getElementById('tipoDocumentoSelectCardiopatia')?.value || '',
-        Diabetes: document.getElementById('consulta-antecedente-checked-diabetes')?.checked || false,
-        ObserDiabetes: document.getElementById('consulta-observacion-diabetes')?.value || '',
-        ParentescoDiabetes: document.getElementById('tipoDocumentoSelectDiabetes')?.value || '',
-        EnfCardiovascular: document.getElementById('consulta-antecedente-checked-enfcardiovascular')?.checked || false,
-        ObserEnfCardiovascular: document.getElementById('consulta-observacion-enfcardiovascular')?.value || '',
-        ParentescoEnfCardiovascular: document.getElementById('tipoDocumentoSelectEnfCardiovascular')?.value || '',
-        Hipertension: document.getElementById('consulta-antecedente-checked-hipertension')?.checked || false,
-        ObserHipertension: document.getElementById('consulta-observacion-hipertension')?.value || '',
-        ParentescoHipertension: document.getElementById('tipoDocumentoSelectHipertension')?.value || '',
-        Cancer: document.getElementById('consulta-antecedente-checked-cancer')?.checked || false,
-        ObserCancer: document.getElementById('consulta-observacion-cancer')?.value || '',
-        ParentescoCancer: document.getElementById('tipoDocumentoSelectCancer')?.value || '',
-        Tuberculosis: document.getElementById('consulta-antecedente-checked-tuberculosis')?.checked || false,
-        ObserTuberculosis: document.getElementById('consulta-observacion-tuberculosis')?.value || '',
-        ParentescoTuberculosis: document.getElementById('tipoDocumentoSelectTuberculosis')?.value || '',
-        EnfMental: document.getElementById('consulta-antecedente-checked-enfmental')?.checked || false,
-        ObserEnfMental: document.getElementById('consulta-observacion-enfmental')?.value || '',
-        ParentescoEnfMental: document.getElementById('tipoDocumentoSelectEnfMental')?.value || '',
-        EnfInfecciosa: document.getElementById('consulta-antecedente-checked-enfinfecciosa')?.checked || false,
-        ObserEnfInfecciosa: document.getElementById('consulta-observacion-enfinfecciosa')?.value || '',
-        ParentescoEnfInfecciosa: document.getElementById('tipoDocumentoSelectEnfInfecciosa')?.value || '',
-        MalFormacion: document.getElementById('consulta-antecedente-checked-malformacion')?.checked || false,
-        ObserMalFormacion: document.getElementById('consulta-observacion-malformacion')?.value || '',
-        ParentescoMalFormacion: document.getElementById('tipoDocumentoSelectMalFormacion')?.value || '',
-        Otro: document.getElementById('consulta-antecedente-checked-otro')?.checked || false,
-        ObserOtro: document.getElementById('consulta-observacion-otro')?.value || '',
-        ParentescoOtro: document.getElementById('tipoDocumentoSelectOtro')?.value || ''
-    };
-
-    // Mostrar los datos capturados en la consola
-    console.log("Datos generales:", {
-        usuarioCreacion, medicoId, especialidadId, pacienteId, historialConsulta, motivoConsulta, enfermedadConsulta, nombrePariente, tipoPariente, telefonoPariente,
-        temperatura, frecuenciaRespiratoria, presionArterialSistolica, presionArterialDiastolica, pulso, peso, talla, planTratamiento, diasIncapacidad, observacionConsulta
-    });
-    console.log("Alergias:", alergias);
-    console.log("Cirugías:", cirugias);
-    console.log("Diagnósticos:", diagnosticos);
-    console.log("Medicamentos:", medicamentos);
-    console.log("Laboratorios:", laboratorios);
-    console.log("Imágenes:", imagenes);
-    console.log("Recomendaciones no farmacológicas:", reconofarmacologicas);
-    console.log("Signos de alarma:", signosAlarma);
-    console.log("Órganos y sistemas:", organosSistemas);
-    console.log("Examen físico:", examenFisico);
-    console.log("Antecedentes familiares:", antecedentesFamiliares);
-
-    // Creación del objeto DTO
+    // Parámetros de consulta
     const consultaDto = {
-        UsuarioCreacion: usuarioCreacion,
-        MedicoId: parseInt(medicoId, 10),
-        EspecialidadId: parseInt(especialidadId, 10),
-        PacienteId: parseInt(pacienteId, 10),
-        HistorialConsulta: historialConsulta,
-        MotivoConsulta: motivoConsulta,
-        EnfermedadConsulta: enfermedadConsulta,
-        NombrePariente: nombrePariente,
-        TipoPariente: parseInt(tipoPariente, 10),
-        TelefonoPariente: telefonoPariente,
-        Temperatura: temperatura,
-        FrecuenciaRespiratoria: frecuenciaRespiratoria,
-        PresionArterialSistolica: presionArterialSistolica,
-        PresionArterialDiastolica: presionArterialDiastolica,
-        Pulso: pulso,
-        Peso: peso,
-        Talla: talla,
-        PlanTratamiento: planTratamiento,
-        DiasIncapacidad: diasIncapacidad ? parseInt(diasIncapacidad, 10) : null,
-        ObservacionConsulta: observacionConsulta,
-        Alergias: alergias,
-        Cirugias: cirugias,
-        Diagnosticos: diagnosticos,
-        Medicamentos: medicamentos,
-        Laboratorios: laboratorios,
-        Imagenes: imagenes,
-        ReconocFarmacologicas: reconofarmacologicas,
-        SignosAlarma: signosAlarma,
-        OrganosSistemas: organosSistemas,
-        ExamenFisico: examenFisico,
-        AntecedentesFamiliares: antecedentesFamiliares
+        UsuarioCreacion: document.getElementById('usuarioNombre')?.value || '',
+        HistorialConsulta: document.getElementById('historiaClinica')?.value || '',
+        PacienteId: parseInt(document.getElementById('idPaciente')?.value || 0),
+        MotivoConsulta: document.getElementById('motivoConsulta')?.value || '',
+        EnfermedadConsulta: document.getElementById('enfermedadProblema')?.value || '',
+        NombrePariente: document.getElementById('acompañante')?.value || '',
+        SignosAlarma: document.getElementById('signosAlarma')?.value || '',
+        ReconocimientoFarmacologico: document.getElementById('reconofarmacologicas')?.value || '',
+        TipoPariente: parseInt(document.getElementById('tipoParienteSelect')?.value || 0),
+        TelefonoPariente: document.getElementById('telefonoPariente')?.value || '',
+        Temperatura: document.getElementById('temperatura_consulta')?.value || '',
+        FrecuenciaRespiratoria: document.getElementById('frecuenciarespiratoria_consulta')?.value || '',
+        PresionArterialSistolica: document.getElementById('PresionarterialsistolicaConsulta')?.value || '',
+        PresionArterialDiastolica: document.getElementById('PresionarterialdiastolicaConsulta')?.value || '',
+        Pulso: document.getElementById('pulso_consulta')?.value || '',
+        Peso: document.getElementById('peso_consulta')?.value || '',
+        Talla: document.getElementById('talla_consulta')?.value || '',
+        PlanTratamiento: document.getElementById('plantratamiento_consulta')?.value || '',
+        DiasIncapacidad: parseInt(document.getElementById('diasincapacidad_consulta')?.value || 0),
+        Observacion: document.getElementById('observacion_consulta')?.value || null,
+        AntecedentesPersonales: document.getElementById('antecedentespersonales_consulta')?.value || '',
+        MedicoId: parseInt(document.getElementById('medicoId')?.value || 0),
+        EspecialidadId: parseInt(document.getElementById('especialidadId')?.value || 0),
+        TipoConsultaId: parseInt(document.getElementById('tipoConsultaC')?.value || 0),
+        NotasEvolucion: document.getElementById('notasevolucion_consulta')?.value || '',
+        ConsultaPrincipal: document.getElementById('consultaprincipal_consulta')?.value || '',
+        EstadoConsulta: parseInt(document.getElementById('estadoConsultaC')?.value || 0),
+
+        // Parámetros de órganos y sistemas
+        OrganosSistemas: {
+            OrgSentidos: document.getElementById('consulta-antecedente-checked-orgsentidos')?.checked || false,
+            ObserOrgSentidos: document.getElementById('consulta-antecedente-observacion-orgsentidos')?.value || '',
+            Respiratorio: document.getElementById('consulta-antecedente-checked-respiratorio')?.checked || false,
+            ObserRespiratorio: document.getElementById('consulta-antecedente-observacion-respiratorio')?.value || '',
+            CardioVascular: document.getElementById('consulta-antecedente-checked-cardiovascular')?.checked || false,
+            ObserCardioVascular: document.getElementById('consulta-antecedente-observacion-cardiovascular')?.value || '',
+            Digestivo: document.getElementById('consulta-antecedente-checked-digestivo')?.checked || false,
+            ObserDigestivo: document.getElementById('consulta-antecedente-observacion-digestivo')?.value || '',
+            Genital: document.getElementById('consulta-antecedente-checked-genital')?.checked || false,
+            ObserGenital: document.getElementById('consulta-antecedente-observacion-genital')?.value || '',
+            Urinario: document.getElementById('consulta-antecedente-checked-urinario')?.checked || false,
+            ObserUrinario: document.getElementById('consulta-antecedente-observacion-urinario')?.value || '',
+            MEsqueletico: document.getElementById('consulta-antecedente-checked-mesqueletico')?.checked || false,
+            ObserMEsqueletico: document.getElementById('consulta-antecedente-observacion-mesqueletico')?.value || '',
+            Endocrino: document.getElementById('consulta-antecedente-checked-endocrino')?.checked || false,
+            ObserEndocrino: document.getElementById('consulta-antecedente-observacion-endocrino')?.value || '',
+            Linfatico: document.getElementById('consulta-antecedente-checked-linfatico')?.checked || false,
+            ObserLinfatico: document.getElementById('consulta-antecedente-observacion-linfatico')?.value || '',
+            Nervioso: document.getElementById('consulta-antecedente-checked-nervioso')?.checked || false,
+            ObserNervioso: document.getElementById('consulta-antecedente-observacion-nervioso')?.value || ''
+        },
+
+        // Parámetros de examen físico
+        ExamenFisico: {
+            Cabeza: document.getElementById('consulta-antecedente-checked-cabeza')?.checked || false,
+            ObserCabeza: document.getElementById('consulta-antecedente-observacion-cabeza')?.value || '',
+            Cuello: document.getElementById('consulta-antecedente-checked-cuello')?.checked || false,
+            ObserCuello: document.getElementById('consulta-antecedente-observacion-cuello')?.value || '',
+            Torax: document.getElementById('consulta-antecedente-checked-torax')?.checked || false,
+            ObserTorax: document.getElementById('consulta-antecedente-observacion-torax')?.value || '',
+            Abdomen: document.getElementById('consulta-antecedente-checked-abdomen')?.checked || false,
+            ObserAbdomen: document.getElementById('consulta-antecedente-observacion-abdomen')?.value || '',
+            Pelvis: document.getElementById('consulta-antecedente-checked-pelvis')?.checked || false,
+            ObserPelvis: document.getElementById('consulta-antecedente-observacion-pelvis')?.value || '',
+            Extremidades: document.getElementById('consulta-antecedente-checked-extremidades')?.checked || false,
+            ObserExtremidades: document.getElementById('consulta-antecedente-observacion-extremidades')?.value || ''
+        },
+
+        // Parámetros de antecedentes familiares
+        AntecedentesFamiliares: {
+            Cardiopatia: document.getElementById('consulta-antecedente-checked-cardiopatia')?.checked || false,
+            ObserCardiopatia: document.getElementById('consulta-observacion-cardiopatia')?.value || '',
+            ParentescoCardiopatia: document.getElementById('tipoDocumentoSelectCardiopatia')?.value ? parseInt(document.getElementById('tipoDocumentoSelectCardiopatia')?.value) : null,
+
+            Diabetes: document.getElementById('consulta-antecedente-checked-diabetes')?.checked || false,
+            ObserDiabetes: document.getElementById('consulta-observacion-diabetes')?.value || '',
+            ParentescoDiabetes: document.getElementById('tipoDocumentoSelectDiabetes')?.value ? parseInt(document.getElementById('tipoDocumentoSelectDiabetes')?.value) : null,
+
+            EnfCardiovascular: document.getElementById('consulta-antecedente-checked-enfcardiovascular')?.checked || false,
+            ObserEnfCardiovascular: document.getElementById('consulta-observacion-enfcardiovascular')?.value || '',
+            ParentescoEnfCardiovascular: document.getElementById('tipoDocumentoSelectEnfCardiovascular')?.value ? parseInt(document.getElementById('tipoDocumentoSelectEnfCardiovascular')?.value) : null,
+
+            Hipertension: document.getElementById('consulta-antecedente-checked-hipertension')?.checked || false,
+            ObserHipertension: document.getElementById('consulta-observacion-hipertension')?.value || '',
+            ParentescoHipertension: document.getElementById('tipoDocumentoSelectHipertension')?.value ? parseInt(document.getElementById('tipoDocumentoSelectHipertension')?.value) : null,
+
+            Cancer: document.getElementById('consulta-antecedente-checked-cancer')?.checked || false,
+            ObserCancer: document.getElementById('consulta-observacion-cancer')?.value || '',
+            ParentescoCancer: document.getElementById('tipoDocumentoSelectCancer')?.value ? parseInt(document.getElementById('tipoDocumentoSelectCancer')?.value) : null,
+
+            Tuberculosis: document.getElementById('consulta-antecedente-checked-tuberculosis')?.checked || false,
+            ObserTuberculosis: document.getElementById('consulta-observacion-tuberculosis')?.value || '',
+            ParentescoTuberculosis: document.getElementById('tipoDocumentoSelectTuberculosis')?.value ? parseInt(document.getElementById('tipoDocumentoSelectTuberculosis')?.value) : null,
+
+            EnfMental: document.getElementById('consulta-antecedente-checked-enfmental')?.checked || false,
+            ObserEnfMental: document.getElementById('consulta-observacion-enfmental')?.value || '',
+            ParentescoEnfMental: document.getElementById('tipoDocumentoSelectEnfMental')?.value ? parseInt(document.getElementById('tipoDocumentoSelectEnfMental')?.value) : null,
+
+            EnfInfecciosa: document.getElementById('consulta-antecedente-checked-enfinfecciosa')?.checked || false,
+            ObserEnfInfecciosa: document.getElementById('consulta-observacion-enfinfecciosa')?.value || '',
+            ParentescoEnfInfecciosa: document.getElementById('tipoDocumentoSelectEnfInfecciosa')?.value ? parseInt(document.getElementById('tipoDocumentoSelectEnfInfecciosa')?.value) : null,
+
+            MalFormacion: document.getElementById('consulta-antecedente-checked-malformacion')?.checked || false,
+            ObserMalFormacion: document.getElementById('consulta-observacion-malformacion')?.value || '',
+            ParentescoMalFormacion: document.getElementById('tipoDocumentoSelectMalFormacion')?.value ? parseInt(document.getElementById('tipoDocumentoSelectMalFormacion')?.value) : null,
+
+            Otro: document.getElementById('consulta-antecedente-checked-otro')?.checked || false,
+            ObserOtro: document.getElementById('consulta-observacion-otro')?.value || '',
+            ParentescoOtro: document.getElementById('tipoDocumentoSelectOtro')?.value ? parseInt(document.getElementById('tipoDocumentoSelectOtro')?.value) : null
+        },
+
+
+        // Tablas relacionadas (Arrays de objetos)
+        Alergias: Array.from(document.querySelectorAll('#hiddenAlergiaInputsContainer input')).map(input => ({
+            CatalogoalergiaId: parseInt(input.value, 10),
+            ObservacionAlergias: "",
+            EstadoAlergias: 1
+        })),
+        Cirugias: Array.from(document.querySelectorAll('#hiddenCirugiaInputsContainer input')).map(input => ({
+            CatalogocirugiaId: parseInt(input.value, 10),
+            ObservacionCirugia: "",
+            EstadoCirugias: 1
+        })),
+        Medicamentos: Array.from(document.querySelectorAll('#medicamentosTableBody tr')).map(tr => ({
+            MedicamentoId: parseInt(tr.querySelector('.medicamento-id')?.value || 0),
+            DosisMedicamento: tr.querySelector('.dosis-medicamento')?.value || '',
+            ObservacionMedicamento: tr.querySelector('.observacion-medicamento')?.value || '',
+            SecuencialMedicamento: null, // Si deseas enviar 'null', puedes asignarlo directamente aquí
+            EstadoMedicamento: 1 // Estado por defecto
+        })),
+
+
+        Laboratorios: Array.from(document.querySelectorAll('#laboratorioTableBody tr')).map(tr => ({
+            CatalogoLaboratorioId: parseInt(tr.querySelector('.laboratorio-id')?.value || 0), // Captura el ID del laboratorio
+            CantidadLaboratorio: parseInt(tr.querySelector('.cantidad')?.value || 0), // Captura la cantidad de laboratorio
+            Observacion: tr.querySelector('.observacion')?.value || '', // Captura la observación
+            SecuencialLaboratorio: null, // Asegúrate de que este campo sea manejado correctamente
+            EstadoLaboratorio: 1 // Estado predeterminado
+        })),
+
+        Imagenes: Array.from(document.querySelectorAll('#imagenesTableBody tr')).map(tr => ({
+            ImagenId: parseInt(tr.querySelector('.imagen-id')?.value || 0),
+            Cantidad: parseInt(tr.querySelector('.cantidad')?.value || 0),
+            Observacion: tr.querySelector('.observacion')?.value || '',
+            SecuencialImagen: null,
+            EstadoImagen: parseInt(tr.querySelector('.estado-imagen')?.value || 1) // Agregando el estado de la imagen
+        })),
+
+
+        // Captura de datos de Diagnósticos
+        Diagnosticos: Array.from(document.querySelectorAll('#diagnosticoTableBody tr')).map(tr => ({
+            DiagnosticoId: parseInt(tr.querySelector('.diagnostico-id')?.value || 0),
+            ObservacionDiagnostico: tr.querySelector('.observacion-diagnostico')?.value || '',
+            PresuntivoDiagnosticos: tr.querySelector('.presuntivo-diagnostico')?.checked || false,
+            DefinitivoDiagnosticos: tr.querySelector('.definitivo-diagnostico')?.checked || false,
+            SecuencialDiagnostico: null, // Envía el secuencial como null
+            EstadoDiagnostico: 1 // Estado predeterminado en 1
+        }))
+
     };
+
+    // Muestra el JSON generado en la consola para debug
+    console.log("JSON generado para consulta:", JSON.stringify(consultaDto));
 
     try {
         // Enviar la solicitud al servidor
-        const response = await fetch('/Consultation/CrearConsulta', {
+        const response = await fetch(consultaUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ consultaDto: consultaDto })
+            body: JSON.stringify(consultaDto)
         });
 
         const result = await response.json();
 
         if (response.ok) {
             console.log('Consulta creada exitosamente:', result);
-            // Redirigir o mostrar mensaje de éxito
         } else {
             console.error('Error al crear la consulta:', result);
         }
@@ -902,5 +897,3 @@ document.getElementById('consultationForm').addEventListener('submit', async fun
         console.error('Error de la solicitud:', error);
     }
 });
-
-

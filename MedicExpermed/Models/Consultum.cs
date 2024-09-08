@@ -14,7 +14,7 @@ namespace MedicExpermed.Models
         public DateTime? FechacreacionConsulta { get; set; }
         public string? UsuariocreacionConsulta { get; set; }
         public string HistorialConsulta { get; set; } = null!;
-        public string? SecuencialConsulta { get; set; }
+        public int? SecuencialConsulta { get; set; }
         public int? PacienteConsultaP { get; set; }
         public string? MotivoConsulta { get; set; }
         public string? EnfermedadConsulta { get; set; }
